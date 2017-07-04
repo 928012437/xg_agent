@@ -1,0 +1,199 @@
+{template '_header'}
+
+<div class="page-heading"> <h2>业务员管理</h2> </div>
+<div class="page-toolbar row m-b-sm m-t-sm">
+    <div class="col-sm-4">
+
+        <div class="input-group-btn">
+            <button class="btn btn-default btn-sm" type="button" data-toggle="refresh" onclick="location.href = ''"><i class="fa fa-refresh"></i></button>
+
+            {ifp 'business.userlist.isreview'}
+            <div class="btn-group btn-group-sm">
+                <button data-toggle="dropdown" class="btn btn-default" aria-expanded="false">审核 <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="btn jud_a" data-toggle="batch" data-href="{php echo webUrl('business/isreview',array('is_review'=>1))}" data-confirm="确认要审核通过？" >审核通过</a></li>
+                    <li><a class="btn jud_a" data-toggle="batch" data-href="{php echo webUrl('business/isreview',array('is_review'=>0))}" data-confirm="确认要取消审核？" >取消审核</a></li>
+                </ul>
+            </div>
+            {/if}
+
+            {ifp 'business.userlist.delete'}
+            <button class="btn btn-default btn-sm jud_a" type="button" data-toggle="batch-remove" data-href="{php echo webUrl('business/delete2')}" data-confirm="确认要删除?" ><i class="fa fa-trash"></i> 删除</button>
+            {/if}
+        </div>
+    </div>
+
+    <form action="" method="post" >
+
+        <div class="col-sm-6 pull-right">
+
+            <div class="input-group">
+                <input type="text" class="form-control input-sm" name="sort" value="{$sort}" placeholder="可搜索姓名/手机号/ID">
+                        <span class="input-group-btn">
+                            <button class="btn btn-sm btn-primary" type="submit"> 搜索</button>
+                            <button class="btn btn-sm btn-default" type="button" onclick="$('#moresearch').toggle()"> 其他 <i class="fa fa-angle-down"></i></button>
+                        </span>
+            </div>
+
+        </div>
+</div>
+
+<div class="page-toolbar row" style="display: none;" id="moresearch">
+
+
+    <div class="col-sm-12">
+
+        <select name="status" class="form-control  input-sm select-md" style="width:140px">
+            <option value="">状态</option>
+            <option value="0">在职</option>
+            <option value="1">休假</option>
+            <option value="2">离职</option>
+        </select>
+
+
+        <select name="flag" class="form-control  input-sm select-md" style="width:140px;">
+            <option value="">身份</option>
+            <option value="0">置业顾问</option>
+            <option value="1">团队经理</option>
+            <option value="2">项目经理</option>
+        </select>
+        <select name="is_review" class="form-control  input-sm select-md" style="width:140px;">
+            <option value="">审核状态</option>
+            <option value="1">已审核</option>
+            <option value="0">未审核</option>
+        </select>
+
+
+        <script type="text/javascript">
+            require(["daterangepicker"], function ($) {
+                $(function () {
+                    $(".daterange.daterange-time").each(function () {
+
+                        var elm = this;
+                        var container = $(elm).parent().prev();
+                        $(this).daterangepicker({
+                            format: "YYYY-MM-DD HH:mm",
+                            timePicker: true,
+                            timePicker12Hour: false,
+                            timePickerIncrement: 1,
+                            minuteStep: 1
+                        }, function (start, end) {
+                            $(elm).find(".date-title").html(start.toDateTimeStr() + " 至 " + end.toDateTimeStr());
+                            container.find(":input:first").val(start.toDateTimeStr());
+                            container.find(":input:last").val(end.toDateTimeStr());
+                        });
+                    });
+                });
+            });
+            function clearTime(obj) {
+
+                $(obj).prev().html("<span class=date-title>" + $(obj).attr("placeholder") + "</span>");
+                $(obj).parent().prev().find("input").val("");
+            }
+        </script>
+        <div style="float:left">
+            <input name="time[start]" type="hidden" value="">
+            <input name="time[end]" type="hidden" value="">
+        </div>
+        <div class="btn-group btn-group-sm" style="padding-right:0;">
+
+            <button style="width:240px" class="btn btn-default daterange daterange-time btn-sm" type="button"><span class="date-title">注册时间</span></button>
+            <button class="btn btn-default btn-sm" type="button" onclick="clearTime(this);$('#moresearch').hide()" placeholder="注册时间"><i class="fa fa-remove"></i></button>
+        </div>
+
+    </div>
+
+</div>
+</form>
+
+<table class="table table-hover table-responsive">
+    <thead class="navbar-inner">
+    <tr>
+        <th style="width:25px;"><input type="checkbox" ></th>
+        <th style="width:120px;">头像/昵称</th>
+        <th style="width:100px;">姓名/手机号</th>
+        <th style="width:80px;">状态</th>
+        <th style="width:100px;">身份类型</th>
+        <th style="width:100px;">审核状态</th>
+        <th style="width:100px;">关注状态</th>
+        <th style="width:70px;">操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {loop $list $v}
+    <tr rel="pop" data-title="" data-content="" data-original-title="" title="">
+        <td style="width:25px;"><input type="checkbox"  value="{$v['id']}"  ></td>
+        <td><img src="{$v['headimgurl']}" style="width:30px;height:30px;padding1px;border:1px solid #ccc">{$v['nickname']}</td>
+        <td>{$v['realname']}<br/>{$v['mobile']}</td>
+        <td>
+            {if $v['status']==0}
+
+            <span class="label label-success">在职</span>
+
+
+            {elseif $v['status']==1}
+
+            <span class="label label-warning">休假</span>
+
+            {else}
+
+            <span class="label label-important">离职</span>
+
+            {/if}
+        </td>
+        <td>
+            {if $v['flag']==0}
+            置业顾问
+            {elseif $v['flag']==1}
+            团队经理
+            {elseif $v['flag']==2}
+            项目经理
+            {/if}
+        </td>
+        <td>
+            {if $v['is_review']==1}
+            <span class="label label-success">已审核</span>
+            {else}
+            <span class="label label-important">未审核</span>
+            {/if}
+        </td>
+
+        <td>
+            {if $v['is_gz']==0}
+            <span class="label label-success">未关注</span>
+            {else}
+            <span class="label label-important">已关注</span>
+            {/if}
+        </td>
+
+        <td style="overflow:visible;">
+            <div class="btn-group btn-group-sm" >
+
+                <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false" href="javascript:;">操作 <span class="caret"></span></a>
+
+                <ul class="dropdown-menu dropdown-menu-left" role="menu" style='z-index: 9999'>
+
+                    {ifp 'business.userlist.detail'}
+                    <li><a href="{php echo webUrl('business/detail',array('id'=>$v['id']))}" title="编辑"><i class='fa fa-edit'></i> 编辑</a></li>
+                    {/if}
+
+                    {ifp 'business.userlist.custo'}
+                    <li><a  href="{php echo webUrl('customer',array('cid'=>$v['id']))}" title='客户'><i class='fa fa-list'></i> 客户</a></li>
+                    {/if}
+
+                    {ifp 'business.userlist.delete'}
+                    <li><a data-toggle="ajaxRemove" href="{php echo webUrl('business/delete2',array('id'=>$v['id']))}" title='删除会员' data-confirm="确定要删除该业务员吗？"><i class='fa fa-remove'></i> 删除</a></li>
+                    {/if}
+                </ul>
+
+            </div>
+
+        </td>
+    </tr>
+    {/loop}
+    </tbody>
+</table>
+{$pager}
+
+{template '_footer'}

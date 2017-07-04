@@ -1,0 +1,252 @@
+{template '_header'}
+
+<div class="page-heading"><h2>客户管理</h2></div>
+
+<form action="" method="post" class="form-horizontal form-search" role="form">
+    <div class="page-toolbar row m-b-sm m-t-sm">
+        <div class="col-sm-4">
+
+            <div class="input-group-btn">
+                <button class="btn btn-default btn-sm" type="button" data-toggle='refresh'><i class='fa fa-refresh'></i>
+                </button>
+                {ifp 'customer.isreview'}
+                <div class="btn-group btn-group-sm">
+                    <button data-toggle="dropdown" class="btn btn-default" aria-expanded="false">审核 <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="btn jud_a" data-toggle="batch" data-href="{php echo webUrl('customer/review',array('review'=>1))}" data-confirm="确认要审核通过？" >审核通过</a></li>
+                        <li><a class="btn jud_a" data-toggle="batch" data-href="{php echo webUrl('customer/review',array('review'=>0))}" data-confirm="确认要取消审核？" >取消审核</a></li>
+                    </ul>
+                </div>
+                {/if}
+                {ifp 'customer.allot'}
+                <button class="btn btn-default btn-sm" type="button" data-toggle='batch' onclick="allot();"><i
+                        class='fa fa-user'></i> 分配
+                </button>
+                {/if}
+                {ifp 'customer.isvalid'}
+                <button class="btn btn-default btn-sm" type="button" data-toggle='batch'
+                        data-href="{php echo webUrl('customer/isvalid')}"><i
+                        class='fa fa-circle'></i> 置于无效
+                </button>
+                {/if}
+                {ifp 'customer.delete'}
+                <button class="btn btn-default btn-sm" type="button" data-toggle='batch-remove' data-confirm="确认要删除吗?"
+                        data-href="{php echo webUrl('customer/delete')}"><i class='fa fa-trash'></i> 删除
+                </button>
+                {/if}
+
+            </div>
+        </div>
+
+        <div class="col-sm-8 pull-right">
+
+            <div class="input-group">
+                <input type="text" class="input-sm form-control" name='keyword' value="{$_GPC['keyword']}"
+                       placeholder="ID/姓名/手机号">
+                <span class="input-group-btn">
+                    <button class="btn btn-sm btn-primary" type="submit"> 搜索</button>
+                    {ifp 'customer.export'}
+                    <button type="submit" name="export" value="1" class="btn btn-success btn-sm">导出</button>
+                    {/if}
+                    <button class="btn btn-sm btn-default" type="button" onclick="$('#moresearch').toggle()"> 其他<i class="fa fa-angle-down"></i></button>
+                </span>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="page-toolbar row" style="display: none;" id="moresearch">
+
+        <div class="col-sm-12">
+
+            <select name="lid" class="form-control  input-sm select-md" style="width:140px">
+                <option value="">意向项目</option>
+                {loop $loupan $v}
+                <option value="{$v['id']}">{$v['title']}</option>
+                {/loop}
+            </select>
+
+
+            <select name="yxjb" class="form-control  input-sm select-md" style="width:140px;">
+                <option value="">意向级别</option>
+                {loop $yxjb $v}
+                <option value="{$v['name']}">{$v['name']}</option>
+                {/loop}
+            </select>
+            <select name="gjstatu" class="form-control  input-sm select-md" style="width:140px;">
+                <option value="">客户状态</option>
+                {loop $status $v}
+                <option value="{$v['id']}">{$v['name']}</option>
+                {/loop}
+            </select>
+
+            <select name="is_review" class="form-control  input-sm select-md" style="width:140px;">
+                <option value="">是否审核</option>
+                <option value="1">是</option>
+                <option value="0">否</option>
+            </select>
+
+
+            <script type="text/javascript">
+                require(["daterangepicker"], function ($) {
+                    $(function () {
+                        $(".daterange.daterange-time").each(function () {
+
+                            var elm = this;
+                            var container = $(elm).parent().prev();
+                            $(this).daterangepicker({
+                                format: "YYYY-MM-DD HH:mm",
+                                timePicker: true,
+                                timePicker12Hour: false,
+                                timePickerIncrement: 1,
+                                minuteStep: 1
+                            }, function (start, end) {
+                                $(elm).find(".date-title").html(start.toDateTimeStr() + " 至 " + end.toDateTimeStr());
+                                container.find(":input:first").val(start.toDateTimeStr());
+                                container.find(":input:last").val(end.toDateTimeStr());
+                            });
+                        });
+                    });
+                });
+                function clearTime(obj) {
+
+                    $(obj).prev().html("<span class=date-title>" + $(obj).attr("placeholder") + "</span>");
+                    $(obj).parent().prev().find("input").val("");
+                }
+            </script>
+            <div style="float:left">
+                <input name="time[start]" type="hidden" value="">
+                <input name="time[end]" type="hidden" value="">
+            </div>
+            <div class="btn-group btn-group-sm" style="padding-right:0;">
+
+                <button style="width:240px" class="btn btn-default daterange daterange-time btn-sm" type="button"><span class="date-title">报备时间</span></button>
+                <button class="btn btn-default btn-sm" type="button" onclick="clearTime(this);$('#moresearch').hide()" placeholder="报备时间"><i class="fa fa-remove"></i></button>
+            </div>
+
+        </div>
+
+    </div>
+
+</form>
+
+{if count($list)>0}
+<table class="table table-hover table-responsive">
+    <thead class="navbar-inner">
+    <tr>
+        <th style="width:25px;"><input type='checkbox'/></th>
+        <th style="width:150px;">姓名/电话</th>
+        <th style="width:120px;">报备时间</th>
+        <th style="width:80px;">跟进状态</th>
+        <th style="width:100px;">跟进人</th>
+        <th style="width:120px;">跟进时间</th>
+        <th style="width:100px;">是否有效</th>
+        <th style="width:100px;">是否审核/是否关注</th>
+        <th style="">操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {loop $list $row}
+    <tr rel="pop" >
+
+        <td style="position: relative; ">
+            <input type='checkbox' name="select"  value="{$row['id']}"/></td>
+
+        <td>{$row['name']}<br/>{$row['tel']}</td>
+
+        <td>{php echo date('Y-m-d',$row['createtime'])}<br/>{php echo date('H:i',$row['createtime'])}</td>
+
+        <td>{$row['status']}</td>
+        <td>{$row['cid']}</td>
+        <td>{php echo date('Y-m-d',$row['updatetime'])}<br/>{php echo date('H:i',$row['updatetime'])}</td>
+        <td>{$row['isvalid']}</td>
+        <td>
+
+            {if $row['is_review']==1}
+            <span class="label label-success">已审核</span>
+            {else}
+            <span class="label label-important">未审核</span>
+            {/if}
+
+            <br>
+            {if $row['is_gz']==1}
+            <span class="label label-success">关注</span>
+            {else}
+            <span class="label label-important">未关注</span>
+            {/if}
+
+
+        </td>
+
+        <td  style="overflow:visible;">
+
+            <div class="btn-group btn-group-sm" >
+                <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false" href="javascript:;">操作 <span class="caret"></span></a>
+                <ul class="dropdown-menu dropdown-menu-left" role="menu" style='z-index: 9999'>
+
+                    {ifp 'customer.detail.main'}
+                    <li><a href="{php echo webUrl('customer/detail',array('id' => $row['id']));}" title="客户详情"><i class='fa fa-edit'></i> 客户详情</a></li>
+                    {/if}
+                    {ifp 'customer.delete'}<li><a  data-toggle='ajaxRemove'  href="{php echo webUrl('customer/delete',array('id' => $row['id']));}" title='删除客户' data-confirm="确定要删除该客户吗？"><i class='fa fa-remove'></i> 删除客户</a></li>{/if}
+                </ul>
+            </div>
+
+        </td>
+    </tr>
+    {/loop}
+    </tbody>
+</table>
+{$pager}
+{else}
+<div class='panel panel-default'>
+    <div class='panel-body' style='text-align: center;padding:30px;'>
+        暂时没有任何客户!
+    </div>
+</div>
+{/if}
+
+<script language="javascript">
+    function allot() {
+
+        var x = document.getElementsByName("select");
+
+        var flag = false;
+
+        var j = 0;
+
+        var selected = new Array();
+
+        for (var i = 0; i < x.length; i++) {
+
+            if (x[i].checked == true) {
+
+                selected[j] = x[i].value;
+
+                flag = true;
+
+                j++;
+
+            }
+
+        }
+
+        if (flag) {
+
+
+
+        } else {
+
+            alert('您还未选择需要操作的客户！');
+
+            return;
+
+        }
+
+            window.location.href = "{php echo webUrl('customer/allot')}&selected=" + selected;
+
+    }
+
+</script>
+
+{template '_footer'}

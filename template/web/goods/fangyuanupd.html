@@ -1,0 +1,223 @@
+{template '_header'}
+
+<div class="page-heading"> <h2>房源详情</h2> </div>
+
+<form action="" method="post" class="form-horizontal form form-validate" enctype="multipart/form-data" >
+
+    <input type="hidden" name="id" class="form-control" value="{$data['id']}"/>
+    <input type="hidden" name="biaoshi" class="form-control" value="{$opp}"/>
+    {if $opp == 'fangyuan'}
+
+    <div class="tabs-container">
+
+        <div class="tabs">
+            <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#tab-basic" aria-expanded="true"> 房源信息</a></li>
+                <li class=""><a data-toggle="tab" href="#tab-trade" aria-expanded="false"> 交易信息</a></li>
+
+            </ul>
+            <div class="tab-content ">
+                <div id="tab-basic" class="tab-pane active">
+
+                    <div class="form-group"  style="padding-top:12px;" >
+                        <label class="col-xs-12 col-sm-2 col-md-2  control-label">户型：</label>
+                        <div class="col-sm-5">
+                            <input type="text" name="huxing" class="form-control"  value="{$data['huxing']}" />
+                            <span class="help-block">请输入户型</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-12 col-sm-2 col-md-2  control-label">房间结构：</label>
+                        <div class="col-sm-5">
+                            <input type="text" name="jiegou" class="form-control" value="{$data['jiegou']}" />
+                            <span class="help-block">请输入房间结构</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-12 col-sm-2 col-md-2  control-label">朝向：</label>
+                        <div class="col-sm-5">
+                            <input type="text" name="chaoxiang" class="form-control" value="{$data['chaoxiang']}" />
+                            <span class="help-block">请输入朝向</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-12 col-sm-2 col-md-2  control-label">建筑面积：</label>
+                        <div class="col-sm-5">
+                            <input type="text" name="jz_mj" class="form-control" value="{$data['jz_mj']}" />
+                            <span class="help-block">请输入建筑面积</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-12 col-sm-2 col-md-2  control-label">套内面积：</label>
+                        <div class="col-sm-5">
+                            <input type="text" name="tn_mj" class="form-control" value="{$data['tn_mj']}" />
+                            <span class="help-block">请输入套内面积</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-12 col-sm-2 col-md-2  control-label">建筑单价：</label>
+                        <div class="col-sm-5">
+                            <input type="text" name="jz_dj" class="form-control" value="{$data['jz_dj']}" />
+                            <span class="help-block">请输入建筑单价</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-12 col-sm-2 col-md-2  control-label">套内单价：</label>
+                        <div class="col-sm-5">
+                            <input type="text" name="tn_dj" class="form-control" value="{$data['tn_dj']}" />
+                            <span class="help-block">请输入套内单价</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-12 col-sm-2 col-md-2  control-label">标准总价：</label>
+                        <div class="col-sm-5">
+                            <input type="text" name="zongjia" class="form-control" value="{$data['zongjia']}" />
+                            <span class="help-block">请输入标准总价</span>
+                        </div>
+                    </div>
+                    <div class="form-group" >
+                        <label class="col-xs-12 col-sm-2 col-md-2  control-label">改变状态:</label>
+
+                        <div class="col-sm-6">
+
+                            <div class="input-group">
+                                <select class="form-control" name="status" style="width:100px;" >
+                                    <option value="0" {if $data['status']==0}selected=true{/if}>未售出</option>
+                                    <option value="1" {if $data['status']==1}selected=true{/if}>已售出</option>
+                                    <option value="2" {if $data['status']==2}selected=true{/if}>预销控</option>
+                                    <option value="3" {if $data['status']==3}selected=true{/if}>未放盘</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tab-trade" class="tab-pane">
+
+                    <div class="form-group">
+
+                        <label for="cid" class="col-xs-12 col-sm-2 col-md-2  control-label" >选择所属客户</label>
+
+                        <div class="col-sm-5">
+
+                            <div class="input-group">
+
+                                <input type="hidden" id="cid"  name="cid" value="{$data['cid']}">
+
+                                <input type="text" class="form-control" id="name"  readonly="true" value="{$data['name']}" >
+
+                                        <span class="input-group-btn">
+
+                                            <button type="button" class="btn " data-toggle="modal" data-target="#myModal" >选择上级</button>
+
+                                        </span>
+
+                            </div><!-- /input-group -->
+
+                        </div><!-- /.col-lg-6 -->
+
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-xs-12 col-sm-2 col-md-2  control-label">客户名：</label>
+                        <div class="col-sm-5">
+                            <input type="text" name="cname" class="form-control" value="{$data['cname']}" />
+                            <span class="help-block">请输入客户名</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-xs-12 col-sm-2 col-md-2  control-label">客户电话：</label>
+                        <div class="col-sm-5">
+                            <input type="text" name="ctel" class="form-control" value="{$data['ctel']}" />
+                            <span class="help-block">请输入客户电话</span>
+                        </div>
+                    </div>
+
+                    <div class="modal inmodal" id="myModal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+                        <div class="modal-dialog">
+                            <div class="modal-content animated bounceInRight">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">关闭</span>
+                                    </button>
+                                    <h4 class="modal-title">选择客户</h4>
+                                </div>
+                                <small class="font-bold">
+                                    <div class="modal-body" >
+                                        <table class="table table-striped"  >
+                                            <th>名字</th>
+                                            <th>电话</th>
+                                            <th>操作</th>
+                                            <tbody id="addhtml" >
+                                            {loop $list $l}
+                                            <tr>
+                                                <td>{$l['name']}</td>
+                                                <td>{$l['tel']}</td>
+                                                <td>
+                                                    <a href="javascript:" data-id="{$l['id']}" data-name="{$l['name']}" onclick="choose(this);" data-dismiss="modal">选择</a>
+                                                </td>
+                                            </tr>
+                                            {/loop}
+                                            </tbody>
+                                            <a onclick="changepage(1)" >上一页</a>
+                                            <a onclick="changepage(2)" >下一页</a>
+                                        </table>
+                                    </div>
+
+                                    <div class="modal-footer" >
+                                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                                    </div>
+                                </small>
+                            </div>
+                            <small class="font-bold">
+                            </small>
+                        </div>
+                        <small class="font-bold">
+                        </small>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    {else}
+    <div class="form-group"  style="padding-top:12px;" >
+        <label class="col-xs-12 col-sm-2 col-md-2  control-label">名字：</label>
+        <div class="col-sm-5">
+            <input type="text" name="name" class="form-control" value="{$data['name']}"/>
+            <span class="help-block">请输入名字</span>
+        </div>
+    </div>
+    {/if}
+    <button type="submit" class="btn btn-primary span3" value="修改">修改</button>
+    <button type="button" class="btn btn-primary span3" onclick="history.back();">返回</button>
+</form>
+
+<script>
+    function choose(obj){
+        $("#cid").val($(obj).attr('data-id'));
+        $("#name").val($(obj).attr('data-name'));
+    }
+    function changepage(act){
+        if(typeof(page)=="undefined"||page<1){
+            page=1;
+        }
+        if(act==1){
+            page--;
+        }else {
+            page++;
+        }
+        url="{php echo webUrl('goods/getpagecustomer')}&page="+page;
+        $.post(url,function(data){
+            data=eval("("+data+")");
+            str='';
+            data.forEach(function(value){
+                str+='<tr><td>'+value.name+'</td><td>'+value.tel+'</td><td><a href="javascript:" data-id="'+value.id+'" data-name="'+value.name+'" onclick="choose(this);" data-dismiss="modal">选择</a></td></tr>';
+            });
+            $("#addhtml").html(str);
+        });
+    }
+</script>
+
+{template '_footer'}

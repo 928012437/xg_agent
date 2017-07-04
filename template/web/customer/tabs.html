@@ -1,0 +1,18 @@
+<style type='text/css'>
+	.goods-list a {
+		position: relative; 
+	}
+	.goods-list span  {
+	float:right;margin-right:20px;
+	 
+	}
+</style>
+
+<div class='menu-header'>客户管理</div>
+{ifp 'customer'}
+<ul>
+    <li {if $_GPC['r'] == 'customer' || $_GPC['r'] == 'customer.detail' || $_GPC['r'] == 'customer.allot' }class="active" {/if}><a href="{php echo webUrl('customer')}">客户列表</a></li>
+	{ifp 'customer.pool'}<li {if $_GPC['r'] == 'customer.pool' }class="active" {/if}><a href="{php echo webUrl('customer/pool')}">客户池</a></li>{/if}
+    {ifp 'customer.gjset'}<li {if $_GPC['r'] == 'customer.gjset' }class="active" {/if}><a href="{php echo webUrl('customer/gjset')}">跟进设置</a></li>{/if}
+</ul>
+{/if}

@@ -1,0 +1,49 @@
+{template '_header'}
+
+<div class="page-heading"> <h2>投诉与建议</h2> </div>
+<div class="main">
+    <div class="complain">
+        <form action="" method="post" onsubmit="return formcheck(this)">
+            <div class="panel panel-default">
+                <div class="panel-body table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>姓名</th>
+                            <th>电话</th>
+                            <th>投诉与建议</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {loop $complains $row}
+                        <tr>
+                            <td>
+                                {$row['realname']}
+                            </td>
+                            <td>
+                                {$row['mobile']}
+                            </td>
+                            <td>
+                                {php echo $row['complain']}
+                            </td>
+                            <td>
+                                {ifp 'qmjjr.complain.edit'}
+                                <a href="{php echo webUrl('qmjjr/complainpost', array('id' => $row['id']))}" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="bottom" title="详情"><i class="fa fa-edit"></i></a>&nbsp;&nbsp;
+                                {/if}
+                                {ifp 'qmjjr.complain.delete'}
+                                <a href="{php echo webUrl('qmjjr/delcomplain', array('id' => $row['id']))}" data-confirm="确认删除吗？" class="btn btn-default btn-sm" data-toggle="ajaxRemove" data-placement="bottom" title="删除"><i class="fa fa-times"></i></a>
+                                {/if}
+                            </td>
+                        </tr>
+                        {/loop}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div style="text-align:center;">{$pager}</div>
+</div>
+
+{template '_footer'}

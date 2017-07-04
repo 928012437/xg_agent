@@ -1,0 +1,126 @@
+{template '_header'}
+
+<div class="page-heading"> <h2>{if $mid!=''}{$tempmeb['realname']}{/if}提现申请 总数：{php echo $count;}</h2></div>
+
+<form action="" method="post" class="form-horizontal  table-search" role="form" id="form1">
+    <input type="hidden" name="opp" value="sort" >
+    <div class="page-toolbar row m-b-sm m-t-sm">
+        <div class="col-sm-6">
+
+            <div class="btn-group btn-group-sm" style="float:left">
+                <button class="btn btn-default btn-sm" type="button" data-toggle="refresh"><i class="fa fa-refresh"></i></button>
+
+            </div>
+
+            <div class="input-group input-group-sm">
+
+                <select name="timetype" class="form-control  input-sm select-md" style="width:95px;">
+                    <option value="">不按时间</option>
+                    <option value="applytime">申请时间</option>
+                </select>
+
+                <script type="text/javascript">
+                    require(["daterangepicker"], function ($) {
+                        $(function () {
+                            $(".daterange.daterange-time").each(function () {
+                                var elm = this;
+                                $(this).daterangepicker({
+                                    startDate: $(elm).prev().prev().val(),
+                                    endDate: $(elm).prev().val(),
+                                    format: "YYYY-MM-DD HH:mm",
+                                    timePicker: true,
+                                    timePicker12Hour: false,
+                                    timePickerIncrement: 1,
+                                    minuteStep: 1
+                                }, function (start, end) {
+                                    $(elm).find(".date-title").html(start.toDateTimeStr() + " 至 " + end.toDateTimeStr());
+                                    $(elm).prev().prev().val(start.toDateTimeStr());
+                                    $(elm).prev().val(end.toDateTimeStr());
+                                });
+                            });
+                        });
+                    });
+                </script>
+
+                <input name="time[start]" type="hidden" value="{php echo date('Y-m-d h:i',strtotime('-1 month'));}">
+                <input name="time[end]" type="hidden" value="{php echo date('Y-m-d h:i');}">
+                <button class="btn btn-default daterange daterange-time btn-sm" type="button"><span class="date-title">{php echo date('Y-m-d h:i',strtotime('-1 month'));} 至 {php echo date('Y-m-d h:i');}</span> <i class="fa fa-calendar"></i></button>
+
+            </div>
+        </div>
+
+        <div class="col-sm-6 pull-right">
+
+            <div class="input-group">
+                <input type="text" class="form-control input-sm" name="keyword" value="{$sort}" placeholder="可搜索昵称、姓名、手机号">
+                        <span class="input-group-btn">
+                            <button class="btn btn-sm btn-primary" type="submit"> 搜索</button>
+                            <button type="submit" name="export" value="1" class="btn btn-success btn-sm">导出</button>
+                        </span>
+            </div>
+
+        </div>
+    </div>
+</form>
+
+<table class="table table-hover">
+    <thead class="navbar-inner">
+    <tr>
+        <th style="width:170px;">提现单号</th>
+        <th style="width:120px;" >经纪人</th>
+        <th style="width:100px;" >姓名/手机</th>
+
+        <th >提现方式</th>
+        <th >申请佣金 </th>
+        <th >申请积分 </th>
+        <th style="width:90px;" >申请时间</th>
+        <th >状态</th>
+
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {loop $commislist $c}
+    <tr>
+        <td>{$c['ordernum']}</td>
+        <td>
+            <a href="{php echo webUrl('qmjjr/detail',array('id'=>$c['mid']))}" target="_blank">
+                <img src="{$c['jjr']['headurl']}" style="width:30px;height:30px;padding1px;border:1px solid #ccc" onerror=""> {$c['jjr']['nickname']} </a>
+        </td>
+        <td>{$c['jjr']['realname']}<br>{$c['jjr']['mobile']}</td>
+
+        <td>{$c['txfs']}</td>
+        <td>{$c['commission']}</td>
+        <td>{$c['credit']}</td>
+
+        <td>
+            {php echo date('Y-m-d',$c['time'])}<br>{php echo date('H:i',$c['time'])}
+        </td>
+        <td>
+            {if $c['status']==0}
+            待审核
+            {elseif $c['status']==1 }
+            待打款
+            {elseif $c['status']==2 }
+            已打款
+            {elseif $c['status']==3 }
+            无效的
+            {/if}
+        </td>
+        <td>
+            {if $c['status']==0}
+            <a class="btn btn-default btn-sm" href="{php echo webUrl('qmjjr/sh_no_detail',array('id'=>$c['id']))}">详情</a>
+            {elseif $c['status']==1 }
+            <a class="btn btn-default btn-sm" href="{php echo webUrl('qmjjr/dk_no_detail',array('id'=>$c['id']))}">详情</a>
+            {elseif $c['status']==2 }
+            <a class="btn btn-default btn-sm" href="{php echo webUrl('qmjjr/dk_ok_detail',array('id'=>$c['id']))}">详情</a>
+            {elseif $c['status']==3 }
+            <a class="btn btn-default btn-sm" href="{php echo webUrl('qmjjr/wuxiao_detail',array('id'=>$c['id']))}">详情</a>
+            {/if}
+        </td>
+    </tr>
+    {/loop}
+    </tbody>
+</table>
+
+{template '_footer'}

@@ -1,0 +1,211 @@
+{template '_header'}
+
+<div class="page-heading">
+    {ifp 'qmjjr.identity.add'}
+            <span class="pull-right">
+
+                <a class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal" href=""><i
+                        class="fa fa-plus"></i> 添加身份</a>
+            </span>
+    {/if}
+    <h2>身份管理</h2></div>
+
+<div class="modal inmodal" id="myModal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content animated bounceInRight">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span
+                        class="sr-only">关闭</span>
+                </button>
+                <h4 class="modal-title">添加身份</h4>
+            </div>
+            <small class="font-bold">
+                <form action="" class="form-horizontal form form-validate" method="post">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label class="col-xs-12 col-sm-2 col-md-2 control-label">排序</label>
+                            <div class="col-sm-5">
+                                <input type="text" name="displayorder" class="form-control" value="0"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-12 col-sm-2 col-md-2 control-label">名称</label>
+                            <div class="col-sm-5">
+                                <input type="text" name="name" class="form-control" value=""/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-12 col-sm-2 col-md-2 control-label">邀请奖励积分</label>
+                            <div class="col-sm-5">
+                                <input type="text" name="credit" class="form-control" value=""/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-12 col-sm-2 col-md-2 control-label">注册奖励积分</label>
+                            <div class="col-sm-5">
+                                <input type="text" name="credit2" class="form-control" value=""/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-12 col-sm-2 col-md-2 control-label">是否显示</label>
+                            <div class="col-sm-5">
+                                <label class="radio-inline">
+                                    <input type="radio" name="status" value="1" checked> 是
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="status" value="0">否
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" name="token" value="{$_W['token']}">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                        <button type="submit" class="btn btn-primary">添加</button>
+                    </div>
+                </form>
+            </small>
+        </div>
+        <small class="font-bold">
+        </small>
+    </div>
+    <small class="font-bold">
+    </small>
+</div>
+
+<div class="modal inmodal" id="myModal2" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content animated bounceInRight">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span
+                        class="sr-only">关闭</span>
+                </button>
+                <h4 class="modal-title">编辑身份</h4>
+            </div>
+            <small class="font-bold">
+                <form action="" class="form-horizontal form form-validate" method="post">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label class="col-xs-12 col-sm-2 col-md-2 control-label">排序</label>
+                            <div class="col-sm-5">
+                                <input type="text" name="displayorder" id="displayorder" class="form-control" value=""/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-12 col-sm-2 col-md-2 control-label">名称</label>
+                            <div class="col-sm-5">
+                                <input type="text" name="name" id="name" class="form-control" value=""/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-12 col-sm-2 col-md-2 control-label">邀请奖励积分</label>
+                            <div class="col-sm-5">
+                                <input type="text" name="credit" id="credit" class="form-control" value=""/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-12 col-sm-2 col-md-2 control-label">注册奖励积分</label>
+                            <div class="col-sm-5">
+                                <input type="text" name="credit2" id="credit2" class="form-control" value=""/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-12 col-sm-2 col-md-2 control-label">是否显示</label>
+                            <div class="col-sm-5">
+                                <label class="radio-inline">
+                                    <input type="radio" name="status" id="status1" value="1"> 是
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="status" id="status2" value="0">否
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" name="token" value="{$_W['token']}">
+                    <input type="hidden" name="id" id="iid" value="">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                        <button type="submit" class="btn btn-primary">保存</button>
+                    </div>
+                </form>
+            </small>
+        </div>
+        <small class="font-bold">
+        </small>
+    </div>
+    <small class="font-bold">
+    </small>
+</div>
+<form action="{php echo webUrl('qmjjr/pxidentity')}" method="post" class="form-validate">
+    <table class="table table-hover table-responsive">
+        <thead class="navbar-inner">
+        <tr>
+            <th style="width:10px;"></th>
+            <th style="width:100px;">显示顺序</th>
+            <th>身份名称</th>
+            <th>邀请奖励积分</th>
+            <th>注册奖励积分</th>
+            <th>是否显示</th>
+            <th style="width:160px;" >更新时间</th>
+            <th style="width:150px;">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {loop $idens $v}
+        <tr>
+            <td></td>
+            <td><input type="text" class="form-control" style="width:50px;" name="displayorder[{$v['id']}]"
+                       value="{$v['displayorder']}"></td>
+            <td>{$v['name']}</td>
+            <td>{$v['credit']}</td>
+            <td>{$v['credit2']}</td>
+            <td>{if $v['status']=='1'}<span class="label label-success">显示</span>{else}<span
+                    class="label label-important">不显示</span>{/if}
+            </td>
+            <td>{php echo date('Y-m-d H:i:s',$v['createtime'])}</td>
+            <td style="text-align:left;">
+                {ifp 'qmjjr.identity.edit'}
+                <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal2" href="javascript:"
+                   data-id="{$v['id']}" data-name="{$v['name']}" data-diplayorder="{$v['displayorder']}"
+                   data-status="{$v['status']}" data-credit="{$v['credit']}" data-credit2="{$v['credit2']}" onclick="changeinfo(this)"><i class="fa fa-edit"></i>编辑</a>
+                {/if}
+                {ifp 'qmjjr.identity.delete'}
+                <a data-toggle="ajaxRemove" class="btn btn-default btn-sm"
+                   href="{php echo webUrl('qmjjr/delidentity', array('id' => $v['id']))}" data-confirm="确定删除该身份吗？"><i
+                        class="fa fa-trash"></i>删除</a>
+                {/if}
+            </td>
+        </tr>
+        {/loop}
+        </tbody>
+    </table>
+    <table>
+        <tr>
+            <th style="width:30px"></th>
+            <td>
+                <button type="submit" class="btn btn-primary" name="submit" value="提交">提交</button>
+                <input type="hidden" name="token" value="{$_W['token']}"/>
+            </td>
+        </tr>
+    </table>
+</form>
+
+<script>
+
+    function changeinfo(obj) {
+
+        $("#displayorder").val($(obj).attr('data-displayorder'));
+        $("#name").val($(obj).attr('data-name'));
+        $("#credit").val($(obj).attr('data-credit'));
+        $("#credit2").val($(obj).attr('data-credit2'));
+        $("#iid").val($(obj).attr('data-id'));
+        if ($(obj).attr('data-status') == 1) {
+            $("#status1").prop('checked', 'true');
+        } else {
+            $("#status2").prop('checked', 'true');
+        }
+    }
+
+</script>
+
+{template '_footer'}

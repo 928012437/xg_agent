@@ -1,0 +1,56 @@
+{template '_header'}
+
+<div class="page-heading">
+    {ifp 'goods.adv.add'}
+            <span class="pull-right">
+                <a class="btn btn-primary btn-sm" href="{php echo webUrl('goods/advpost')}"><i class="fa fa-plus"></i>添加幻灯片</a>
+            </span>
+    {/if}
+    <h2>幻灯片管理</h2>
+</div>
+
+<div class="main panel panel-default">
+    <div class="panel-body table-responsive">
+        <table class="table table-hover">
+            <thead class="navbar-inner">
+            <tr>
+                <th>显示顺序</th>
+                <th>缩略图</th>
+                <th>连接</th>
+                <th>是否显示</th>
+                <th >操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {loop $list $adv}
+            <tr style="height: 95px;">
+                <td>{$adv['displayorder']}</td>
+                <td><a href="{$adv['url']}"><img src="{media $adv['img']}" width="100px;" onerror=""></a></td>
+                <td>{$adv['url']}</td>
+                <td>{if $adv['status']==0}隐藏{else}显示{/if}</td>
+                <td style="text-align:left;">
+                    {ifp 'goods.adv.edit'}
+                    <a href="{php echo webUrl('goods/advpost', array( 'id' => $adv['id']))}" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="修改"><i class="fa fa-edit"></i></a>
+                    {/if}
+                    {ifp 'goods.adv.delete'}
+                    <a data-toggle="ajaxRemove" href="{php echo webUrl('goods/deladv', array( 'id' => $adv['id']))}"class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="删除" datatype="-confirm是否删除此幻灯片？" ><i class="fa fa-times"></i></a>
+                    {/if}
+                </td>
+            </tr>
+            {/loop}
+            </tbody>
+        </table>
+        {$pager}
+    </div>
+</div>
+<script>
+    require(['bootstrap'], function ($) {
+        $('.btn').hover(function () {
+            $(this).tooltip('show');
+        }, function () {
+            $(this).tooltip('hide');
+        });
+    });
+</script>
+
+{template '_footer'}

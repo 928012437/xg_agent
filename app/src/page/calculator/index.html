@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <title>房贷计算器</title>
+    <link type="text/css" rel="stylesheet" href="Public/myui_v1/css/base.css?a1">
+    <link type="text/css" rel="stylesheet" href="Public/myui_v1/css/scrollbar.css">
+    <script type="text/javascript" src="Public/dest/base.min.js"></script>
+    <script type="text/javascript" src="Public/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="Public/myui_v1/js/iscroll.js"></script>
+    <script type="text/javascript" src="Public/myui_v1/js/ui.js?a"></script>
+    <script type="text/javascript" src="Public/myui_v1/js/simpledialog.js"></script>
+    <script type="text/javascript" src="Public/myui_v1/js/jquery.validate.js"></script>
+    <script type="text/javascript" src="Public/myui_v1/js/jquery.validate.extend.js "></script>
+    <script type="text/javascript" src="Public/myui_v1/js/tool.js"></script>
+    <script type="text/javascript">
+        //判断ajax是否己完成
+        var isAjaxFinish = true;
+        var readata = {"ll":"5.15","bs":"1.00"};
+        var userkey = "5af053ab-0cc2-11e4-b778-00155d0a6f1e@"+"87b28455-00c7-11e4-b3c0-d89d672b5244";
+        $(function () {
+            $("#getcaptcha").bind("click", function () {
+                //toast("测试的",$("#getcaptcha").offset().top);
+                newtoast("内测阶段，验证码请联系管理员", $("#getcaptcha").offset().top);
+            })
+
+            validate();
+
+            $("#submit").on("click", function () {
+                var domll = $("#ll"),dombs=$("#bs");
+                domll.val(parseFloat(domll.val(),10));
+                dombs.val(parseFloat(dombs.val(),10));
+                $("#callAjaxForm").submit();
+                var saveData  = {"ll":$("#ll").val(),"bs":$("#bs").val()};
+                readata =saveData;
+                localStorage.setItem("calculator#"+userkey,JSON.stringify(saveData));
+//                alert($('tr').parents('.heightMask').get(0).offsetHeight);
+//                alert($(window).height());
+               $('td').height(($('tr').parents('.heightMask').height() -30)/9);
+            });
+        })
+
+        //表单校验
+        function validate() {
+            var w;
+            $("#callAjaxForm").validate({
+                errorPlacement: function (error, element) {
+                    //error.insertAfter(element.parent())
+                    //console.log(error,element.length);
+                    //UI.creatPopMsg.creat(error[0].innerText,element.id);
+                    UI.formErrorMsg.send(element[0].id, error[0].innerText);
+                },
+                //showErrors:function(errorMap,errorList) {
+                // if(errorList.length === 0) return false;
+
+                // UI.creatPopMsg.creat(errorList[0].message,errorList[0].element.id);
+                //},
+                ignore: [],
+                messages: {
+                    dklx: {
+                        required: "请选择贷款类型"
+                    },
+                    hkfs: {
+                        required: "请选择还款方式"
+                    },
+                    dkys: {
+                        required: "请输入贷款年限"
+                    },
+                    sydk: {
+                        required: "请输入正确商业贷款",
+                        min: "商业贷款最少为0"
+                    },
+                    dkze: {
+                        required: "请输入正确贷款额度",
+                        min: "贷款额度最少为0"
+                    },
+                    gjj: {
+                        required: "请输入正确公积金",
+                        min: "公积金最少为0"
+                    },
+                    ll: {
+                        required: "请输入正确贷款利率",
+                        min: "利率最少为0"
+                    },
+                    bs: {
+                        required: "请输入正确倍数",
+                        min: "倍数最少为0"
+                    }
+                },
+                rules: {
+                    dklx: {
+                        required: true
+                    },
+                    hkfs: {
+                        required: true
+                    },
+                    dkys: {
+                        required: true
+                    },
+                    sydk: {
+                        required: true,
+                        min: 0
+                    },
+                    dkze: {
+                        required: true,
+                        min: 0
+                    },
+                    gjj: {
+                        required: true,
+                        min: 0
+                    },
+                    ll: {
+                        required: true,
+                        min: 0
+                    },
+                    bs: {
+                        required: true,
+                        min: 0
+                    }
+                },
+                onfocusout: function (element, event) {
+                    this.element(element);
+                    if(!$(element).attr("readonly")){
+                        if (!$("#" + element.id).valid()) {
+                            //离开时，未通过校验则提示信息和边框为红色
+                        }
+                        else {
+                            UI.formErrorMsg.remove(element.id);
+                        }
+                    }
+                },
+                //提交注册表单
+                submitHandler: function (form) {
+                    $(".container").hide();
+                    $('#poweredpanel .powered').hide();
+                    calculator.calculate();
+                    $('body').css('background-color','#f0f0f0');
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+<style>
+    .new-form-control ul.checkbox li{color:#6a6a6a;}
+    ul.PPmultSelect li.select, ul.PPsingleSelect li.select{color:#53d769;}
+    .form-control.font_333 input,.form-control.font_333 .select-value{color:#6a6a6a;}
+    ul.ppTap li.select{color:#fff;}
+    ul.PPsingleSelect.equal li{padding:5px 0;box-sizing:border-box;}
+    .container{margin:0px;}
+    ul.ppTap{border-right:1px solid #53d769;}
+    .fixedBottom > ul{height:58px;}
+    .heightMask{overflow-y:scroll;-webkit-overflow-scrolling: touch;}
+    .panel_content{margin-bottom:0px;padding:12px 12px 0;}
+    .table_selectlist{padding:12px;background:#fff;padding-bottom:0;border:0;}
+    .table_selectlist{padding:0;}
+    .table_selectlist table tr{line-height:normal;border-bottom:1px solid #eee;}
+    .table_selectlist table tr td:first-child{padding:0 0 0 12px;font-size:16px;}
+    .table_selectlist tr td + td{font-size:14px;text-align:right;padding-right:12px;}
+    .table_selectlist table,.panel_simplelist table{background:#fff;}
+    .red-color{font-size:16px;}
+    @media all and (-webkit-transform-3d){/* Android4.0下不识别该-webkit-transform-3d，使用它可做Android4.0下版本兼容 */
+        .new-form-group .form-group .form-control ul.multi-input .item input.tr{
+            position:relative;
+            top:-2px;
+        }
+    }
+    ul.PPsingleSelect.equal li{text-align: center;color: #33cc66}
+    ul.PPmultSelect li div, ul.PPsingleSelect li div{
+        text-align: left;
+        border-radius: 0;
+        border: 0;
+        width: auto;
+        height: auto;
+        line-height: auto;
+        font-size: 12px;
+    }
+    ul.PPsingleSelect.equal li.select{
+        color: #fff;
+    }
+    ul.PPmultSelect li.select div, ul.PPsingleSelect li.select div{
+        text-align: left;
+        border-radius: 0;
+        border: 0;
+        width: auto;
+        height: auto;
+        line-height: auto;
+        font-size: 12px;
+    }
+    .new-form-control ul.checkbox li{
+        width:96px;
+     }
+    .form-control ul.checkbox li > span{
+        top: 5px;
+    }
+    form .form-group.hasfocus:active{
+        background-color: #d9d9d9;
+    }
+    form.new-form-group .form-group{
+        margin: 0px;
+        border-bottom: none;
+        -webkit-box-sizing: border-box;
+        padding: 12px 12px 0px 12px;
+        overflow: visible;
+    }
+    form .form-group.noborder:after{
+        border-bottom: none;
+    }
+    form .form-group:after{
+        padding-top: 12px;
+        display: block;
+        content: " ";
+        border-bottom: 1px solid #f3f3f3;
+        position: relative;
+        top:1px;
+        clear: both;
+    }
+    form .form-group label{
+        margin-bottom: 0px;
+    }
+    .form-control .select-value{
+        padding: 12px 25px 5px 5px;
+    }
+    i.arrow_right{
+        top: 12px;
+    }
+    .form-control ul.checkbox li{
+        top: 6px;
+    }
+    .form-control input, .form-control input:disabled, .form-control textarea{
+        padding: 10px 5px 5px 5px;
+    }
+    form .form-group .form-control{
+        top: 0px;
+        right: 12px;
+    }
+    .mt_f_50{
+        padding: 0px 12px;
+    }
+    .new-form-group .form-group .form-control ul.multi-input .item{
+        margin-top: 2px;
+    }
+    .error{
+        padding-left: 12px;
+        padding-top: 5px;
+    }
+    .new-form-group .form-group .form-control ul.multi-input input.white{width:40px;}
+    input{
+        -webkit-appearance: none
+    }
+</style>
+<div class="container" style="min-height: 746px;">
+    <form id="callAjaxForm" class="new-form-group" novalidate="novalidate">
+        <div class="form-group clearfix noborder" style="padding-bottom: 0px">
+            <div class="form-control clearfix">
+                <ul class="PPsingleSelect equal ppTap" for="dklx" value="1" id="dkType">
+                    <li value="1" class="select" style="width: 299px;">商业</li>
+                    <li value="2" style="width: 299px;">公积金</li>
+                    <li value="3" style="border-right-style: none; width: 301px;">组合</li>
+                <input type="hidden" class="chooseHidden" name="dklx" id="dklx" value="1" tablename="undefined"></ul>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>还款方式：</label>
+            <div class="form-control new-form-control">
+                <input type="hidden" name="hkfs" id="hkfs" value="1" tablename="undefined"><ul class="checkbox NewPPsingleSelect" for="hkfs" value="1" style="padding:0;">
+                    <li value="1" style="float:right;margin-right:0;padding-right:0;width:62px;" class="select"><span>&nbsp;</span><div>
+                        <span>&nbsp;</span>
+                        <div style="line-height:8px;">等额本息</div>
+                    </div></li>
+                    <li value="2" style="float:right;width:62px;"><span>&nbsp;</span><div>
+                        <span>&nbsp;</span>
+                        <div style="line-height:8px;">等额本金</div>
+                    </div></li>
+                </ul>
+            </div>
+        </div>
+        <div id="collateralBox" style="display: none">
+            <div class="form-group border-bottom">
+                <label>商业贷款：</label>
+                <div class="form-control needUnitSpan font_333">
+                    <input style="margin-top:13px;padding:0px;height:20px;" class="float-right text-right blk_input" name="sydk" id="sydk" min="0" value="0" defaultvalue="0">
+                    <span>万元</span>
+                </div>
+            </div>
+            <div class="form-group border-bottom">
+                <label>公积金：</label>
+                <div class="form-control needUnitSpan font_333">
+                    <input style="margin-top:13px;padding:0px;height:20px;" class="float-right text-right" name="gjj" id="gjj" min="0" value="0" defaultvalue="0">
+                    <span>万元</span>
+                </div>
+            </div>
+        </div>
+        <div id="soloBox">
+            <div class="form-group border-bottom">
+                <label>贷款总额：</label>
+                <div class="form-control needUnitSpan font_333">
+                    <input style="background:white;line-height:14px;padding:0;font-size:100%;height:16px;position:relative;top:14px;" class="float-right text-right" name="dkze" id="dkze" min="0" defaultvalue="0" value="0">
+                    <span>万元</span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group border-bottom hasfocus">
+            <label>贷款年限：</label>
+            <div class="form-control text-right font_333" fc_for="dkys">
+                <i class="arrow_right"></i>
+                <ul class="singleSelect" for="dkys" value="120">
+                    <div>
+                    <li value="12">1&nbsp;&nbsp;年</li>
+                    <li value="24">2&nbsp;&nbsp;年</li>
+                    <li value="36">3&nbsp;&nbsp;年</li>
+                    <li value="48">4&nbsp;&nbsp;年</li>
+                    <li value="60">5&nbsp;&nbsp;年</li>
+                    <li value="72">6&nbsp;&nbsp;年</li>
+                    <li value="84">7&nbsp;&nbsp;年</li>
+                    <li value="96">8&nbsp;&nbsp;年</li>
+                    <li value="108">9&nbsp;&nbsp;年</li>
+                    <li value="120" class="select">10&nbsp;&nbsp;年</li>
+                    <li value="132">11&nbsp;&nbsp;年</li>
+                    <li value="144">12&nbsp;&nbsp;年</li>
+                    <li value="156">13&nbsp;&nbsp;年</li>
+                    <li value="168">14&nbsp;&nbsp;年</li>
+                    <li value="180">15&nbsp;&nbsp;年</li>
+                    <li value="192">16&nbsp;&nbsp;年</li>
+                    <li value="204">17&nbsp;&nbsp;年</li>
+                    <li value="216">18&nbsp;&nbsp;年</li>
+                    <li value="228">19&nbsp;&nbsp;年</li>
+                    <li value="240">20&nbsp;&nbsp;年</li>
+                    <li value="252">21&nbsp;&nbsp;年</li>
+                    <li value="264">22&nbsp;&nbsp;年</li>
+                    <li value="276">23&nbsp;&nbsp;年</li>
+                    <li value="288">24&nbsp;&nbsp;年</li>
+                    <li value="300">25&nbsp;&nbsp;年</li>
+                    <li value="312">26&nbsp;&nbsp;年</li>
+                    <li value="324">27&nbsp;&nbsp;年</li>
+                    <li value="336">28&nbsp;&nbsp;年</li>
+                    <li value="348">29&nbsp;&nbsp;年</li>
+                    <li value="360">30&nbsp;&nbsp;年</li>
+                    </div>
+                </ul>
+            </div>
+        </div>
+        <div class="form-group border-bottom">
+            <label>贷款利率：</label>
+            <!--隐藏层开始 这个层被UI删掉了，但是为了不影响计算公式，将其隐藏-->
+            <div class="form-control needUnitSpan font_333 hide" id="dkllToggle">
+                <input style="margin-top:13px;padding:0px;height:20px;" readonly="readonly" class="dkll float-right text-right" min="0" value="6.55">
+                <span>%</span>
+            </div>
+            <!--隐藏层结束-->
+            <div class="form-control font_333 prNone" id="gongshi">
+                <ul class="multi-input" style="float:right;">
+                    <li>
+                        <div class="item">
+                            <input style="position:relative;top:-2px;font-size:14px;" name="ll" id="ll" value="5.15" min="0"><span style="display:inline-block;line-height:40px;">%</span>
+                        </div>
+                    </li>
+                    <li>
+                        <p style="padding:0 3px;">x</p>
+                    </li>
+                    <li>
+                        <div class="item">
+                            <input style="position:relative;top:-2px;font-size:14px;" class="tr" type="" name="bs" id="bs" value="1" min="0"><span style="display:inline-block;line-height:40px;">倍</span>
+                        </div>
+                    </li>
+                    <li>
+                        <p>=</p>
+                        <input class="white" readonly="readonly" id="dkll_bs" value="5.15" min="0"><i>%</i>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="form-group border-bottom ft12">
+            当前年限基准利率：商业<span class="high-color mr-5-10">5.15%</span>
+            公积金<span class="high-color mr-5-10">3.25%</span>
+        </div>
+
+    </form>
+    <ul class="mt_f_50">
+        <a class="btn-block calculatorBtn" id="submit">马上计算</a>
+    </ul>
+</div>
+<div id="poweredpanel">
+    <style>
+    .powered{
+        margin-bottom: 6px;
+        font-size: 11px;
+        color: #aaa;
+        text-align: center;
+        width: 100%;
+    }
+    .powered a{
+        color: #aaa;
+        text-decoration: none;
+    }
+    .powered a:hover,.powered a:visited{
+        color: #aaa;
+    }
+    .powered a:active{
+        color: #2caf56;
+    }
+</style>
+<!--<div class="powered" id="powered">
+    Powered&nbsp;by&nbsp;&nbsp;<a href=""></a>
+</div>-->
+</div>
+<!--计算结果层-->
+<div id="result_box" style="display: none;">
+    <div class="heightMask" style="height: 717px;">
+        <!--<div style="padding:0px 15px;">
+            <a class="btn white_btn" onclick="goReturn();">返  回</a>
+        </div>-->
+        <div id="minpanel" style="min-height: 746px;">
+            <div class="panel_content">
+                <div class="table_selectlist font_333">
+                    <table>
+                        <tbody>
+                        <tr>
+                            <td>贷款类型</td>
+                            <td id="td_dklx"></td>
+                        </tr>
+                        <tr>
+                            <td>还款方式</td>
+                            <td id="td_hkfs"></td>
+                        </tr>
+                        <tr>
+                            <td>贷款总额</td>
+                            <td id="td_dkze"></td>
+                        </tr>
+                        <tr>
+                            <td>贷款年限</td>
+                            <td id="td_dkys"></td>
+                        </tr>
+                        <tr>
+                            <td>贷款利率</td>
+                            <td id="td_dkll"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="panel_content" id="refund">
+                <div class="table_selectlist font_333">
+                    <table style="border:none;">
+                        <tbody>
+                        </tbody>
+                        <!-- <tfoot>
+                             <tr>
+                                 <td>还款明细</td>
+                                 <td class="td_arrow_box"><i class="arrow_right"></i></td>
+                             </tr>
+                         </tfoot>-->
+                    </table>
+                </div>
+            </div>
+
+            <div class="panel_content" id="rfdmonthdetails">
+                <div class="panel_simplelist needBorderBottom">
+                    <table>
+                        <thead>
+                        <tr class="title">
+                            <td class="left">期次</td>
+                            <td class="right">月供额(元)</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <style>
+    .powered{
+        margin-bottom: 6px;
+        font-size: 11px;
+        color: #aaa;
+        text-align: center;
+        width: 100%;
+    }
+    .powered a{
+        color: #aaa;
+        text-decoration: none;
+    }
+    .powered a:hover,.powered a:visited{
+        color: #aaa;
+    }
+    .powered a:active{
+        color: #2caf56;
+    }
+</style>
+<!--<div class="powered" id="powered">
+    Powered&nbsp;by&nbsp;&nbsp;<a href=""></a>
+</div>-->
+    </div>
+    <!--<div style="height:58px"></div>-->
+    <div class="fixedBottom">
+        <ul>
+            <li>
+                <a class="btn btn-block" href="javascript:void(0);" onclick="goReturn();" style="text-decoration:none;">
+                    <span><i></i>返  回</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<script type="text/javascript" src="Public/myui_v1/js/calculator.js?v=1"></script>
+<script type="text/javascript" src="Public/myui_v1/js/calculatorMore.js"></script>
+<script type="text/javascript">
+    $(function () {
+        setTimeout(function(){
+            $('#minpanel').css('min-height',$(window).height()-29);
+            $('.container').css('min-height',$(window).height()-29);
+            $('body').append($('<div style="height:0.1px;overflow:hidden;opacity: 0.0001">'+(+new Date())+'</div>'));
+        },0);
+        var $dkType = $('#dkType');
+        var width = $dkType.width();
+        var $liitems = $dkType.find('li');
+        var twidth = parseInt(width / $liitems.length);
+        for (var i = 0, len = $liitems.length; i < len; i++) {
+            var $item = $($liitems[i]);
+            if (i == len - 1) {
+                $item.css('width', width - twidth * ($liitems.length - 1));
+            }
+            else {
+                $item.css('width', twidth);
+            }
+        }
+//        $('.checkbox li').on('click', function () {
+//            $(this).addClass('select').siblings().removeClass('select')
+//        });
+        $('.heightMask').height($(window).height() - 58);
+        var cur_data = JSON.parse(localStorage.getItem("calculator#"+userkey));
+        if(cur_data&&cur_data.ll){
+            readata = cur_data;
+        }
+        $("#ll").val(readata.ll);
+        $("#bs").val(readata.bs);
+        $('#ll,#bs').trigger('change');
+        /*贷款类型(1商业,2公积金,3组合)*/
+        $('.PPsingleSelect[for="dklx"] li').click(function () {
+            var obj = $(this).val();
+            if (obj == '1') {
+                $('#gongshi,#soloBox').show();
+                $('#collateralBox').hide();
+                $('#ll').val(readata.ll);
+                $('#dkllToggle').hide();
+
+                $('#ll,#bs').trigger('change');
+            }
+            else if (obj == '2') {
+                $('#gongshi,#collateralBox').hide();
+                $('#soloBox').show();
+                $('#ll').val(readata.ll);
+                $('.dkll').val('3.25');
+                $('#dkllToggle').show();
+            }
+            else if (obj == '3') {
+                $('#gongshi,#collateralBox').show();
+                $('#soloBox').hide();
+                $('#ll').val(readata.ll);
+                $('#dkllToggle').hide();
+                $('#ll,#bs').trigger('change');
+            }
+        });
+    });
+    function goReturn() {
+        $("#result_box").hide();
+        $('#poweredpanel .powered').show();
+        $(".container").show();
+        $('body').css('background-color','#fff')
+    }
+</script>
+
+<div id="mask" style="top: 285px;"></div><div id="msg"></div><div id="cli_dialog_div"></div><div style="height:0.1px;overflow:hidden;opacity: 0.0001">1470047496742</div></body></html>

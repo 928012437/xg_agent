@@ -1,0 +1,55 @@
+{template '_header'}
+
+<div class="page-heading">
+
+	<span class='pull-right'>
+
+		<a class="btn btn-default  btn-sm" href="{php echo webUrl('qmjjr')}">返回列表</a>
+
+	</span>
+    <h2>充值积分</h2>
+</div>
+
+
+<form action="" method="post" class="form-horizontal form-validate" >
+<input type="hidden" name="selectid" value="{$selected}" />
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label">变化</label>
+        <div class="col-sm-9 col-xs-12">
+            <label class='radio-inline'>
+                <input type='radio' name='changetype' value='0' checked/> 增加
+            </label>
+            <label class='radio-inline'>
+                <input type='radio' name='changetype' value='1'/> 减少
+            </label>
+            <label class='radio-inline'>
+                <input type='radio' name='changetype' value='2'/> 最终<span class='name'>{if $type=='credit1'}积分{else}余额{/if}</span>
+            </label>
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label mustl">充值数目</label>
+        <div class="col-sm-9 col-xs-12">
+            <input type="text" name="num" class="form-control" value="" data-rule-number='true'
+                   data-rule-required='true' data-rule-min='0.01'/>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">备注</label>
+        <div class="col-sm-9 col-xs-12">
+            <textarea name="remark" class="form-control richtext" cols="70"></textarea>
+        </div>
+    </div>
+
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="submit">确认充值</button>
+    </div>
+
+</form>
+
+
+{template '_footer'}

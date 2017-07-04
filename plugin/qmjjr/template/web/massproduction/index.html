@@ -1,0 +1,41 @@
+{template '_header'}
+
+<div class="page-heading"><h2>批量添加经纪人</h2></div>
+<form class="form-horizontal form form-validate" action="" method="post" enctype="multipart/form-data">
+    <div class="panel-body">
+
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2  control-label">上传excel文件</label>
+            <div class="col-sm-5">
+                <input type="file" name="massproduction" class="form-control" value=""/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2  control-label">选择身份</label>
+            <div class="col-sm-9 col-xs-12">
+                <select id='selectdetail' class='form-control' name="sfid" >
+                    <option value="-1">请选择</option>
+                    {loop $identity $key $s}
+                    <option value="{$s['id']}" >
+                    {$s['name']}
+                    </option>
+                    {/loop}
+
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2  control-label">文件格式示例</label>
+            <div class="col-sm-5">
+                <img src="{php echo XG_AGENT_STATIC }images/excelsl.png" style="width: 500px" >
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary span3" value="提交">提交</button>
+
+    </div>
+</form>
+
+{template '_footer'}

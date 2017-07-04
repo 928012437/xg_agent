@@ -1,0 +1,21 @@
+<style type='text/css'>
+	.goods-list a {
+		position: relative; 
+	}
+	.goods-list span  {
+	float:right;margin-right:20px;
+	 
+	}
+</style>
+
+{ifp 'goods'}
+<div class='menu-header'>项目管理</div>
+<ul>
+	{ifp 'goods.adv.main'}<li {if $_GPC['r'] == 'goods.adv'||$_GPC['r'] == 'goods.advpost'}class="active"{/if}><a href="{php echo webUrl('goods/adv')}">幻灯片管理</a></li>{/if}
+    {ifp 'goods.main'}<li {if $_GPC['r'] == 'goods.loupan'  || $_GPC['r'] == 'goods.loupan_post'|| $_GPC['r'] == 'goods.loupan_sence' }class="active" {/if}><a href="{php echo webUrl('goods/loupan')}">项目管理</a></li>{/if}
+    {ifp 'goods.hximg.main'}<li {if $_GPC['r'] == 'goods.hximg'  || $_GPC['r'] == 'goods.posthxt' }class="active" {/if}><a href="{php echo webUrl('goods/hximg')}">户型图管理</a></li>{/if}
+    {ifp 'goods.fangyuan.main'}<li {if $_GPC['r'] == 'goods.fangyuan' }class="active" {/if}><a href="{php echo webUrl('goods/fangyuan',array('opp'=>'fangyuan','oppp'=>'list'))}">房源管理</a></li>{/if}
+</ul>
+{/if}
+
+  

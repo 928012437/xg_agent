@@ -1,0 +1,123 @@
+{template '_header'}
+<link rel="stylesheet" type="text/css" href="../addons/ewei_shopv2/template/mobile/default/static/css/coupon.css?v=2.0.0">
+<div class='fui-page  fui-page-current coupon-detail-page'>
+    <div class="fui-header">
+		<div class="fui-header-left">
+			<a class="back"></a>
+		</div>
+		<div class="title">优惠券详情</div>
+    </div>
+	<div class='fui-content navbar'>
+		<div class="coupon-content coupon-container">
+			<div class="bd bd-{$coupon['css']}"></div>
+			<div class="body {$coupon['css']}">
+				<div class="bg png png-{$coupon['css']}"></div>
+				<div class='top'>
+					{if !empty($coupon['thumb'])}
+						<div class='left'>
+							<img src='{php echo tomedia($coupon['thumb'])}'/>
+						</div>
+					{/if}
+					<div class='right' {if empty($coupon['thumb'])} style="margin-left:0"{/if}>
+						<div class='inner'  {if empty($coupon['thumb'])} style="margin-left:0"{/if}>
+							<div class="name">{$coupon['couponname']}</div>		
+							<div class="time">
+								{if $coupon['timestr']=='0'}
+									永久有效
+								{else}
+									{if $coupon['timestr']=='1'}
+										即{$coupon['gettypestr']}日内 {$coupon['timedays']} 天有效
+									{else}
+										有效期 {$coupon['timestr']}
+									{/if}
+								{/if}
+							</div>		
+						</div>
+					</div>
+				</div>
+				<div class='enough' >{if $coupon['coupontype']==1}充值{else}消费{/if}{if $coupon['enough']>0}满 ￥{$coupon['enough']}{else}任意金额{/if}</div>
+				<div class='act' >
+					{if $coupon['backtype']==0} 
+					   立减 ￥{$coupon['deduct']} 
+					{elseif $coupon['backtype']==1} 
+					   {$coupon['discount']} 折
+					{elseif $coupon['backtype']==2} 
+						返 {if !empty($coupon['backcredit'])} {$coupon['backcredit']} {$_W['shopset']['trade']['credittext']} {/if}
+						{if !empty($coupon['backmoney'])} {$coupon['backmoney']} {$_W['shopset']['trade']['moneytext']} {/if}
+						{if !empty($coupon['backredpack'])} {$coupon['backredpack']} 现金 {/if}
+					{/if}
+				</div>
+			</div>
+			<div class="bd1 bd-{$coupon['css']} "></div>
+		</div>
+		
+		<div class="fui-cell-group fui-cell-group-o">
+			 <div class="fui-cell">
+				<div class="fui-cell-text font-bold">使用说明</div>
+				{if $num>0}
+					<div class="fui-cell-angler">共 {$num} 张</div>
+				{/if}
+			</div>
+			<div class="fui-cell">
+				<div class="fui-cell-text">
+					{if empty($coupon['descnoset'])}
+						{if empty($coupon['coupontype'])}
+							{php echo htmlspecialchars_decode($set['consumedesc'])}
+						{else}
+							{php echo htmlspecialchars_decode($set['rechargedesc'])}
+						{/if}
+					{/if}
+					{$coupon['desc']}
+				</div>
+			</div>
+		 </div>
+
+		{if $coupon['coupontype']==0}
+		<div class="fui-cell-group fui-cell-group-o">
+			 <div class="fui-cell">
+				<div class="fui-cell-text font-bold">推荐商品</div>
+		 		<div class="fui-cell-angler" id="changelot">换一批</div>
+		 	 </div>
+
+			<div class="fui-cell">
+				<div class="fui-cell-text" id="rmgoods">
+					<center>加载中...</center>
+				</div>
+			</div>
+		 </div>
+		{/if}
+{template '_copyright'}
+	</div>
+	{if empty($coupon['used'])}
+		<a class="fui-footer {$coupon['css']}" style="display: block;" href="{$useurl}">
+			{if empty($coupon['coupontype'])}
+				立即去选商品使用
+			{else}
+				立即去充值
+			{/if}
+		</a>
+	{else}
+		<a class="fui-footer past" style="display: block;">已使用</a>
+	{/if}
+	<script id="tpl_list_rmgoods" type="text/html">
+		<div class="fui-goods-group block border" style="background: none; padding: 0;">
+			<%each list as g%>
+				<a href="{php echo mobileUrl('goods/detail')}&id=<%g.id%>" data-nocache='true'>
+					<div class="fui-goods-item">
+							<div class="image">
+								<img src="<%g.thumb%>" />
+							</div>
+							<div class="detail">
+								<div class="name"><%g.title%></div>
+								<div class="price">
+									<span class="text">￥<%g.marketprice%><span class="oldprice">￥<%g.productprice%></span></span>
+								</div>
+							</div>
+						</div>
+				</a>
+			<%/each%>
+		</div>
+	</script>
+	<script language='javascript'>require(['biz/sale/coupon/mydetail'], function (modal) {modal.init();});</script>
+</div>
+{template '_footer'}

@@ -1,0 +1,209 @@
+/**
+*  下拉刷新、滚动翻页样式
+*/
+
+
+
+  body, ul, li {
+            padding: 0;
+            margin: 0;
+            border: 0;
+        }
+
+        body {
+            /*font-size: 12px;*/
+            -webkit-user-select: none;
+            -webkit-text-size-adjust: none;
+            
+        }
+
+        #header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 98px;
+         
+            background:#FFF;
+            padding: 0;
+           
+        }
+
+  #wrapper_r {
+            position: absolute;
+            z-index: 2;
+            top: 44px;
+            bottom:50px;
+            left: 0;
+            width: 100%;
+            overflow: auto;
+        }
+ 
+
+        #wrapper {
+            position: absolute;
+            z-index: 1;
+            top: 44px;
+            bottom:50px;
+            left: 0;
+            width: 100%;
+            overflow: auto;
+        }
+
+        #scroller {
+            position: relative;
+            /*	-webkit-touch-callout:none;*/
+            -webkit-tap-highlight-color: rgba(0,0,0,0);
+            float: left;
+            width: 100%;
+            padding: 0;
+        }
+
+            #scroller ul {
+                position: relative;
+                list-style: none;
+                padding: 0;
+                margin: 0;
+                width: 100%;
+                text-align: left;
+            }
+
+            #scroller li {
+				margin-bottom:-1px;
+                font-size: 1em;
+            }
+
+                #scroller li > a {
+                    display: block;
+                }
+
+        /**
+ *
+ * 下拉样式 Pull down styles
+ *
+ */
+        #pullDown {
+            background: #fff;
+            height: 40px;
+            line-height: 40px;
+            padding: 5px 10px;
+            font-weight: bold;
+            font-size: 14px;
+            color: #888;
+            width:150px;
+            margin:auto;
+        }
+        #pullUp {
+            background: #fff;
+            /*height: 60px;
+            line-height: 60px;*/
+            padding: 5px 10px;
+            font-weight: bold;
+            font-size: 14px;
+            color: #888;
+            width:150px;
+            margin:auto;
+        }
+
+            #pullDown .pullDownIcon, #pullUp .pullUpIcon {
+                display: block;
+                float: left;
+                width: 40px;
+                height: 40px;
+                background: url(../images/pull-icon@2x.png) 0 0 no-repeat;
+                -webkit-background-size: 40px 80px;
+                background-size: 40px 80px;
+                -webkit-transition-property: -webkit-transform;
+                -webkit-transition-duration: 250ms;
+            }
+
+            #pullDown .pullDownIcon {
+                -webkit-transform: rotate(0deg) translateZ(0);
+            }
+
+            #pullUp .pullUpIcon {
+                -webkit-transform: rotate(-180deg) translateZ(0);
+            }
+
+            #pullDown.flip .pullDownIcon {
+                -webkit-transform: rotate(-180deg) translateZ(0);
+            }
+
+            #pullUp.flip .pullUpIcon {
+                -webkit-transform: rotate(0deg) translateZ(0);
+            }
+
+            #pullDown.loading .pullDownIcon, #pullUp.loading .pullUpIcon {
+                background-position: 0 100%;
+                -webkit-transform: rotate(0deg) translateZ(0);
+                -webkit-transition-duration: 0ms;
+                -webkit-animation-name: loading;
+                -webkit-animation-duration: 2s;
+                -webkit-animation-iteration-count: infinite;
+                -webkit-animation-timing-function: linear;
+            }
+
+        @-webkit-keyframes loading {
+            from {
+                -webkit-transform: rotate(0deg) translateZ(0);
+            }
+
+            to {
+                -webkit-transform: rotate(360deg) translateZ(0);
+            }
+        }
+         
+
+
+/*------------- S 以下css主要是仿IOS滚动条样式(可选样式)  -------------*/		
+/**
+ * Horizontal Scrollbar
+ */
+.myScrollbarH {
+	position:absolute;
+	z-index:100;
+	height:7px;
+	bottom:1px;
+	left:2px;
+	right:7px
+}
+
+.myScrollbarH > div {
+	height:100%;
+}
+
+/**
+ * Vertical Scrollbar
+ */
+.myScrollbarV {
+	position:absolute;
+	z-index:100;
+	width:7px;bottom:7px;top:2px;right:1px
+}
+
+.myScrollbarV > div {
+	width:100%;
+}
+
+/**
+ * Both Scrollbars
+ */
+.myScrollbarH > div,
+.myScrollbarV > div {
+	position:absolute;
+	z-index:100;
+
+	/* The following is probably what you want to customize */
+	-webkit-box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	-o-box-sizing:border-box;
+	box-sizing:border-box;
+	
+	border-width:3px;
+	-webkit-border-image:url(../images/scrollbar.png) 6 6 6 6;
+	-moz-border-image:url(../images/scrollbar.png) 6 6 6 6;
+	-o-border-image:url(../images/scrollbar.png) 6 6 6 6;
+	border-image:url(../images/scrollbar.png) 6 6 6 6;
+}
+/*------------- E 以上css主要是仿IOS滚动条样式  -------------*/
+

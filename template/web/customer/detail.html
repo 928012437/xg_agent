@@ -1,0 +1,293 @@
+{template '_header'}
+
+<div class="page-heading">
+            <span class="pull-right">
+                <a class="btn btn-default btn-sm" href="javascript:history.go(-1)">返回列表</a>
+            </span>
+    <h2>用户详细信息</h2>
+</div>
+<form action="" class="form-horizontal form form-validate" method="post">
+    <div class="tabs-container">
+
+        <div class="tabs">
+            <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#jbxx" aria-expanded="true"> 基本信息</a></li>
+                <li class=""><a data-toggle="tab" href="#khhx" aria-expanded="false">客户画像</a></li>
+                <li class=""><a data-toggle="tab" href="#khrz" aria-expanded="false">客户日志</a></li>
+            </ul>
+            <div class="tab-content ">
+
+                <div id="jbxx" class="tab-pane active">
+
+                    <div class="form-group" style="padding-top:10px;">
+                        <label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label"
+                               style="text-align:left;padding-left:3%;">设置客户状态</label>
+                        <div class="col-sm-3">
+                                <select class="form-control" name="status">
+                                    {loop $status $s}
+                                    <option value="{$s['id']}" {if $user['status']==$s['id'] }selected{/if} >{$s['name']}</option>
+                                    {/loop}
+                                </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label"
+                               style="text-align:left;padding-left:3%;">真实姓名</label>
+                        <div class="col-sm-7">
+                            {if $user['name']!=""} {$user['name']}{else}未完善{/if}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label"
+                               style="text-align:left;padding-left:3%;">手机号码</label>
+                        <div class="col-sm-7">
+                            {if $user['tel']!=""} {$user['tel']}{else}未完善{/if}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label"
+                               style="text-align:left;padding-left:3%;">性别</label>
+                        <div class="col-sm-9 col-xs-12">
+                            <label class="radio-inline"><input type="radio" name="sex" value="1" {if $user['sex']==1}checked='true'{/if}>男</label>
+                            <label class="radio-inline"><input type="radio" name="sex" value="0" {if $user['sex']==0}checked='true'{/if}>女</label>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label"
+                               style="text-align:left;padding-left:3%;">
+                            意向项目</label>
+                        <div class="col-sm-3">
+                            {$user['louname']}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label"
+                               style="text-align:left;padding-left:3%;">
+                            报备时间</label>
+                        <div class="col-sm-7">
+                            {php echo date('Y-m-d H:i:s', $user['createtime']);}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label"
+                               style="text-align:left;padding-left:3%;">已发放佣金</label>
+                        <div class="col-sm-7">
+                                {$user['commision']}
+                        </div>
+                    </div>
+                    {if !empty($name)}
+                    <div class="form-group">
+                        <label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label"
+                               style="text-align:left;padding-left:3%;">所属经纪人</label>
+                        <div class="col-sm-6">
+                            {$name}
+                        </div>
+                    </div>
+                    {/if}
+
+                </div>
+
+                <div id="khhx" class="tab-pane">
+
+                    {loop $radios $r}
+                    <div class="form-group">
+                        <label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label {if $r['must']==1}must{/if}"
+                               style="text-align:left;padding-left:3%;">
+                            {$r['name']}</label>
+
+                        {loop $r['sub'] $r2}
+                        <div class="col-sm-3">
+                            <label>
+                                {$r2['name']}
+                                <input type="radio" name="rad_{$r['id']}" class="form-control" value="{$r2['id']}"
+                                       {if strstr($user['option'],$r2['id'])}checked{/if} />
+                            </label>
+                        </div>
+                        {/loop}
+                    </div>
+                    {/loop}
+
+                    {loop $checks $r}
+                    <div class="form-group">
+                        <label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label {if $r['must']==1}must{/if}"
+                               style="text-align:left;padding-left:3%;">
+                            {$r['name']}</label>
+
+                        {loop $r['sub'] $r2}
+                        <div class="col-sm-3">
+                            <label>
+                                {$r2['name']}
+                                <input type="checkbox" name="che_{$r['id']}[]" class="form-control" value="{$r2['id']}"
+                                       {if strstr($user['option'],$r2['id'])}checked{/if}/>
+                            </label>
+                        </div>
+                        {/loop}
+                    </div>
+                    {/loop}
+
+                    {loop $selects $r}
+                    <div class="form-group">
+                        <label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label {if $r['must']==1}must{/if}"
+                               style="text-align:left;padding-left:3%;">
+                            {$r['name']}</label>
+
+                        <div class="col-sm-3">
+                            <select class="form-control" name="sel_{$r['id']}">
+                                <option value="">请选择</option>
+                                {loop $r['sub'] $r2}
+                                <option value="{$r2['id']}" {if strstr($user['option'],$r2['id'])}selected{/if} >{$r2['name']}</option>
+                                {/loop}
+                            </select>
+                        </div>
+
+                    </div>
+                    {/loop}
+
+                </div>
+
+                <div id="khrz" class="tab-pane">
+
+                    <table class="table table-hover">
+
+                        <thead class="navbar-inner">
+
+                        <tr>
+
+
+                            <th class="row-hover">跟进时间</th>
+
+                            <th class="row-hover">跟进动作</th>
+
+                            <th class="row-hover">跟进级别</th>
+
+                            <th class="row-hover">跟进人</th>
+
+                            <th class="row-hover">跟进内容</th>
+
+                            <th class="row-hover">跟进状态</th>
+
+                            <th class="row-hover">下次跟进时间</th>
+
+
+                        </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                        {loop $genjin $v}
+
+                        <tr>
+
+
+                            <td>
+
+                                {php echo date('Y-m-d H:i:s',$v['createtime'])}
+
+                            </td>
+
+                            <td>
+
+                                {$v['gj_fs']}
+
+                            </td>
+
+                            <td>
+
+                                {$v['gj_jb']}
+
+                            </td>
+
+                            <td>
+
+                                <a href="{php echo webUrl('business.detail',array('id'=>$v['userid']))}">{$v['gjren']}</a>
+
+                            </td>
+
+                            <td>
+                                {$v['gj_nr']}
+                            </td>
+
+                            <td>
+                                {$v['gj_stuta']}
+                            </td>
+
+                            <td>
+                                {php echo date('Y-m-d',$v['gj_xc'])}
+                            </td>
+
+
+                        </tr>
+
+                        {/loop}
+
+                        </tbody>
+
+                    </table>
+
+                    <table class="table table-hover">
+
+                        <thead class="navbar-inner">
+
+                        <tr>
+
+
+                            <th class="row-hover">分配时间</th>
+
+                            <th class="row-hover">动作</th>
+
+                        </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                        {loop $zhuanjie $v}
+
+                        <tr>
+
+                            <td>
+
+                                {php echo date('Y-m-d H:i:s',$v['createtime'])}
+
+                            </td>
+
+                            <td>
+
+                                {$v['text']}
+
+                            </td>
+
+                        </tr>
+
+                        {/loop}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+        </div>
+        <div class="form-group"></div>
+        {ifp 'customer.detail.edit'}
+        <div class="form-group">
+            <label class="col-sm-2 control-label"></label>
+            <div class="col-sm-9 col-xs-12">
+                <input type="hidden" name="id" value="{$user['id']}"/>
+                <input type="hidden" name="token" value="{$_W['token']}"/>
+                <input type="submit" value="提交" class="btn btn-primary">
+            </div>
+        </div>
+        {/if}
+
+    </div>
+
+</form>
+
+{template '_footer'}

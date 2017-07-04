@@ -1,0 +1,65 @@
+{template '_header'}
+
+<div class="page-heading">
+    {ifp 'goods.adv.add'}
+            <span class="pull-right">
+                <a class="btn btn-primary btn-sm" href="{php echo webUrl('goods/advpost')}"><i class="fa fa-plus"></i>添加幻灯片</a>
+            </span>
+    {/if}
+    <h2>幻灯片管理</h2>
+</div>
+
+<div class="main">
+    <form action="" method="post" class="form-horizontal form form-validate" enctype="multipart/form-data" onsubmit='return formcheck()'>
+        <input type="hidden" name="id" value="{$adv['id']}" />
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                幻灯片设置
+            </div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">排序</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <input type="text" name="displayorder" class="form-control" value="{$adv['displayorder']}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">幻灯片图片</label>
+                    <div class="col-sm-9 col-xs-12">
+                        {php echo tpl_form_field_image('img', $adv['img'])}
+                        <span class="help-block">图片大小480px X 240px</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">幻灯片连接</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <input type="text" name="url" class="form-control" value="{$adv['url']}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">标题</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <input type="text" name="title" class="form-control" value="{$adv['title']}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">是否显示</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <label class='radio-inline'>
+                            <input type='radio' name='status' value=1' {if $adv['status']==1}checked{/if} /> 是
+                        </label>
+                        <label class='radio-inline'>
+                            <input type='radio' name='status' value=0' {if $adv['status']==0&&$adv['status']!=''}checked{/if} /> 否
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group col-sm-12">
+            <input type="submit"  value="提交" class="btn btn-primary col-lg-1" />
+            <input type="hidden" name="token" value="{$_W['token']}" />
+        </div>
+    </form>
+</div>
+
+{template '_footer'}

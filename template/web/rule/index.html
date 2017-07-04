@@ -1,0 +1,210 @@
+{template '_header'}
+
+<div class="page-heading"> <h2>基础设置</h2> </div>
+<form id="setform" action="" method="post" class="form-horizontal form-validate" novalidate="novalidate">
+
+    <div class="tabs-container" >
+        <div class="" tabs-left="" >
+            <ul class="nav nav-tabs" id="myTab">
+                <li class="active"><a href="#tab_basic">客户状态设置</a></li>
+                <!--<li class=""><a href="#tab_money">结算</a></li>-->
+                <li class=""><a href="#tab_xiangmu">项目设置</a></li>
+                <li class=""><a href="#tab_share">分享设置</a></li>
+            </ul>
+        </div>
+        <div class="tab-content ">
+            <div class="tab-pane active" id="tab_basic">
+                <div class="panel-body">
+                    <div class="col-sm-9 col-xs-12">
+                        <h4>是否开启帐号密码登录</h4>
+                    </div>
+                    <div class="col-sm-2 pull-right" style="padding-top:10px;text-align: right">
+                        <input type="checkbox" class="js-switch" name="is_pwlogin" value="1" {if $rule['is_pwlogin'] == 1}checked='true'{/if}" style="display: none;">
+                    </div>
+
+                </div>
+
+                <div class="panel-body">
+                    <div class="col-sm-9 col-xs-12">
+                        <h4>新注册用户是否审核</h4>
+                    </div>
+                    <div class="col-sm-2 pull-right" style="padding-top:10px;text-align: right">
+                        <input type="checkbox" class="js-switch" name="is_review" value="1" {if $rule['is_review'] == 1}checked='true'{/if}" style="display: none;">
+                    </div>
+
+                </div>
+
+                <div class="panel-body">
+                    <div class="col-sm-9 col-xs-12">
+                        <h4>是否自动分配</h4>
+                    </div>
+                    <div class="col-sm-2 pull-right" style="padding-top:10px;text-align: right">
+                        <input type="checkbox" class="js-switch" name="is_auto" value="1" {if $rule['is_auto'] == 1}checked='true'{/if}" style="display: none;">
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="tab-pane" id="tab_money">
+                <div class="panel-body">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">提现方式</label>
+                        <div class="col-sm-9 col-xs-12">
+                            <label for="cashcredit" class="checkbox-inline">
+                                <input type="checkbox" name="tixian[]" value="余额" id="cashcredit" checked > 提现到商城余额
+                            </label>
+                            <label for="cashweixin" class="checkbox-inline">
+                                <input type="checkbox" name="tixian[]" value="钱包" id="cashweixin" {if strpos($rule['txfs'],'钱包')!==false}checked{/if} > 提现到微信钱包
+                            </label>
+                            <div class="help-block">提示: 提现方式支持多选</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="tab-pane" id="tab_xiangmu">
+                <div class="panel-body">
+
+                    <div class="form-group">
+
+                    <label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">页面标题</label>
+
+                    <div class="col-sm-6">
+
+                    <input type="text" name="title" class="form-control" value="{$rule['title']}" />
+
+                    <span class="help-block">手机端显示的项目名称</span>
+
+                    </div>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">服务电话</label>
+
+                        <div class="col-sm-6">
+
+                            <input type="text" name="mobile" class="form-control" value="{$rule['mobile']}" />
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">选择注册短信模板</label>
+
+                        <div class="col-sm-9 col-xs-12">
+                            <select class='form-control' name="tplid" >
+                                <option value="">请选择</option>
+                                {loop $tplid $key $s}
+                                <option value="{$s['id']}" {if $s['id']==$rule['tplid']}selected='true'{/if}>
+                                {$s['name']}
+                                </option>
+                                {/loop}
+
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label class="col-sm-3 form-control-static">全民经纪人豪华版须知</label>
+
+                        <div class="col-sm-11">
+
+                            {php echo tpl_ueditor('rule',$rule['rule'],array('height'=>'300'))}
+
+                            <span class="help-block">活动的相关说明</span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label class="col-sm-2 form-control-static">注册条款</label>
+
+                        <div class="col-sm-11">
+
+                            {php echo tpl_ueditor('teams',$rule['teams'],array('height'=>'300'))}
+
+                            <span class="help-block">注册条款相关说明</span>
+
+                        </div>
+
+                    </div>
+
+
+
+                </div>
+            </div>
+
+            <div class="tab-pane" id="tab_share">
+                <div class="panel-body">
+                    <div class="form-group">
+
+                        <label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">分享标题</label>
+
+                        <div class="col-sm-6">
+
+                            <input type="text" name="sha_title" class="form-control" value="{$rule['sha_title']}" />
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">分享内容</label>
+
+                        <div class="col-sm-6">
+
+                            <input type="text" name="sha_dec" class="form-control" value="{$rule['sha_dec']}" />
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">分享图片</label>
+                        <div class="col-sm-5">
+                            {php echo tpl_form_field_image('sha_img', $rule['sha_img']);}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-sm-9 col-xs-12">
+            <input type="hidden" name="token" value="{$_W['token']}" />
+
+            <input type="hidden" name="id" value="{$rule['id']}" />
+
+            <input type="submit" value="提交" class="btn btn-primary">
+        </div>
+    </div>
+
+</form>
+
+<script language="javascript">
+    require(['bootstrap'], function () {
+        $('#myTab a').click(function (e) {
+            $('#tab').val($(this).attr('href'));
+            e.preventDefault();
+            $(this).tab('show');
+        });
+    });
+
+    </script>
+
+{template '_footer'}

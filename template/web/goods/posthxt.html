@@ -1,0 +1,118 @@
+{template '_header'}
+
+<div class="page-heading"> <h2>添加户型图</h2> </div>
+<form class="form-horizontal form form-validate" action="" method="post" >
+    <div class="panel-body">
+        <input type="hidden" name="id" value="{$huxing['id']}">
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label">选择楼盘</label>
+            <div class="col-sm-9 col-xs-12">
+                <select id='selectdetail' class='form-control' name="loupanid" >
+                    <option value="-1">请选择</option>
+                    {loop $loupan $key $s}
+                    <option value="{$s['id']}" {if $s['id']==$huxing['loupanid']}selected='true'{/if}>
+                    {$s['title']}
+                    </option>
+                    {/loop}
+
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2  control-label">排序</label>
+            <div class="col-sm-5">
+                <input type="text" name="displayorder" class="form-control" value="{$huxing['displayorder']}" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2  control-label">户型名称：</label>
+            <div class="col-sm-5">
+                <input type="text" name="l_name" class="form-control" value="{$huxing['l_name']}" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2  control-label">室：</label>
+            <div class="col-sm-5">
+                <input type="text" name="l_shi" class="form-control" value="{$huxing['l_shi']}" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2  control-label">厅：</label>
+            <div class="col-sm-5">
+                <input type="text" name="l_ting" class="form-control" value="{$huxing['l_ting']}" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2  control-label">卫：</label>
+            <div class="col-sm-5">
+                <input type="text" name="l_wei" class="form-control" value="{$huxing['l_wei']}" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2  control-label">平米数：</label>
+            <div class="col-sm-5">
+                <input type="text" name="l_pingmi" class="form-control" value="{$huxing['l_pingmi']}" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2  control-label">标签：</label>
+            <div class="col-sm-5">
+                <input type="text" name="l_biaoqian" class="form-control" value="{$huxing['l_biaoqian']}" />
+            </div>
+            <span class="input-group-addon">不同标签用空格隔开</span>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2  control-label">简介：</label>
+            <div class="col-sm-5">
+                <input type="text" name="l_content" class="form-control" value="{$huxing['l_content']}" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2  control-label">户型图片：</label>
+            <div class="col-sm-5">
+                {php echo tpl_form_field_image('l_url', $huxing['l_url']);}
+                <span class="help-block">图片大小480px X 480px</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2  control-label">正常报价：</label>
+            <div class="col-sm-7">
+                <div class="input-group">
+                    <span class="input-group-addon">价格类型：</span>
+                    <input type="text" name="bj_zc_type" class="form-control" value="{$item['bj_zc_type']}" placeholder="">
+                    <span class="input-group-addon">价格：</span>
+                    <input type="text" name="bj_zc" class="form-control" value="{$item['bj_zc']}" />
+                    <span class="input-group-addon">元/m²</span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2  control-label">底价：</label>
+            <div class="col-sm-7">
+                <div class="input-group">
+                    <span class="input-group-addon">价格类型：</span>
+                    <input type="text" name="bj_dj_type" class="form-control" value="{$item['bj_dj_type']}" placeholder="">
+                    <span class="input-group-addon">价格：</span>
+                    <input type="text" name="bj_dj" class="form-control" value="{$item['bj_dj']}" />
+                    <span class="input-group-addon">元/m²</span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2  control-label">是否显示：</label>
+            <div class="col-sm-5">
+                <label class="radio-inline">
+                    <input type="radio" name="status"  value="0" {if $huxing['status']==0}checked{/if} />显示
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="status"  value="1" {if $huxing['status']==1}checked{/if} />隐藏
+                </label>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary span3" name="submit" value="提交">提交</button>
+
+    </div>
+</form>
+
+{template '_footer'}

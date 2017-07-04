@@ -1,0 +1,99 @@
+{template '_header'}
+
+<div class="page-heading">
+    {ifp 'goods.add'}
+            <span class="pull-right">
+                <a class="btn btn-primary btn-sm"
+                   href="{php echo webUrl('goods/loupan_post')}"><i class="fa fa-plus"></i>添加项目</a>
+            </span>
+    {/if}
+    <h2>项目管理</h2>
+</div>
+
+<form action="" method="post">
+    <div class="page-toolbar row m-b-sm m-t-sm">
+        <div class="col-sm-4">
+
+            <div class="input-group-btn">
+                <button class="btn btn-default btn-sm" type="button" data-toggle="refresh" onclick="location.href = ''"><i class="fa fa-refresh"></i></button>
+                {ifp 'goods.delete'}
+                <button class="btn btn-default btn-sm" type="button" data-toggle="batch-remove" data-toggle="{php echo webUrl('goods/loupan_delete')}" data-confirm="确定删除？" ><i class="fa fa-trash"></i> 删除</button>
+                {/if}
+            </div>
+        </div>
+
+            <div class="col-sm-6 pull-right">
+
+                <div class="input-group">
+                    <input type="text" class="form-control input-sm" name="sort" value="{$sort}" placeholder="可搜索标题">
+                        <span class="input-group-btn">
+                            <button class="btn btn-sm btn-primary" type="submit"> 搜索</button>
+                            <button class="btn btn-sm btn-default" type="button" onclick="$('#moresearch').toggle()"> 其他 <i class="fa fa-angle-down"></i></button>
+                        </span>
+                </div>
+
+            </div>
+    </div>
+    <div class="page-toolbar row" style="display: none;" id="moresearch">
+
+        <div class="col-sm-12">
+
+            <select name="search_p" class="form-control  input-sm select-md" style="width:140px;">
+
+            </select>
+            <select name="search_c" class="form-control  input-sm select-md" style="width:140px;">
+
+            </select>
+            <select name="search_a" class="form-control  input-sm select-md" style="width:140px;">
+
+            </select>
+
+            <script type="text/javascript" src="../addons/xg_agent/static/js/web/region_select.js"></script>
+            <script type="text/javascript">
+                var search_p = "";
+                var search_c = "";
+                var search_a = "";
+                new PCAS("search_p", "search_c", "search_a", search_p, search_c, search_a);
+            </script>
+
+        </div>
+
+    </div>
+
+</form>
+
+<table class="table table-hover table-responsive">
+    <thead class="navbar-inner">
+    <tr>
+        <th style="width:25px;"><input type="checkbox" ></th>
+        <th width="160px" >封面</th>
+        <th width="140px" >楼盘名</th>
+        <th width="100px" >场景数</th>
+        <th >操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {loop $list $item}
+    <tr>
+        <td style="width:25px;"><input type="checkbox" value="{$t['id']}" ></td>
+        <td><a href="{php echo webUrl('goods/loupan_post', array('id' => $item['id']))}" ><img src="{media $item[thumb]}" width="100px;"/></a></td>
+        <td>{$item['title']}</td>
+        <td>{$item['total']}</td>
+        <td>
+            {ifp 'goods.photo.main'}
+            <a class="btn btn-default btn-sm"  href="{php echo webUrl('goods/loupan_sence',array('lpid'=> $item['id']))}" ><i class="fa fa-list"></i>相册管理</a>
+            {/if}
+            {ifp 'goods.edit'}
+            <a class="btn btn-default btn-sm"  href="{php echo webUrl('goods/loupan_post',array('id'=> $item['id']))}" ><i class="fa fa-edit"></i> 修改</a>
+            {/if}
+            {ifp 'goods.delete'}
+            <a data-toggle="ajaxRemove" class="btn btn-default btn-sm"  href="{php echo webUrl('goods/loupan_delete',array('id'=> $item['id']))}" data-confirm="此操作不可恢复，确定删除码？"><i class="fa fa-trash"></i> 删除</a></td>
+            {/if}
+    </tr>
+    {/loop}
+    </tbody>
+</table>
+{$pager}
+
+
+{template '_footer'}

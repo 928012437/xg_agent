@@ -1,0 +1,41 @@
+<style type='text/css'>
+    .goods-list a {
+        position: relative;
+    }
+
+    .goods-list span {
+        float: right;
+        margin-right: 20px;
+
+    }
+</style>
+
+<div class='menu-header'>基本配置</div>
+<ul class='goods-list'>
+    {ifp 'rule.edit'}
+    <li {if $_GPC['r'] == 'rule'} class="active" {/if}><a href="{php echo webUrl('rule')}">基本设置</a></li>
+    {/if}
+    {ifp 'rule.option'}
+    <li {if $_GPC['r'] == 'rule.option' || $_GPC['r'] == 'rule.option.option2'}class="active" {/if}><a
+        href="{php echo webUrl('rule/option')}">选项管理</a></li>
+    {/if}
+</ul>
+
+{ifp 'rule.notice'}
+<div class='menu-header'>公告管理</div>
+<ul>
+    <li {if $_W['routes']=='rule.notice'}class='active'{/if}><a href="{php echo webUrl('rule/notice')}">公告通知</a></li>
+</ul>
+{/if}
+
+{if com('verify')}
+{ifp 'rule.verify.store|rule.verify.saler|rule.verify.set'}
+<ul>
+    <div class='menu-header'>O2O</div>
+    <ul>
+        {ifp 'rule.verify.store'}<li {if $_W['action'] == 'rule.verify.store'} class="active" {/if}><a href="{php echo webUrl('rule/verify/store')}">门店管理</a></li>{/if}
+        {ifp 'rule.verify.saler'}<li {if $_W['action'] == 'rule.verify.saler'} class="active" {/if}><a href="{php echo webUrl('rule/verify/saler')}">店员管理</a></li>{/if}
+        {ifp 'rule.verify.set'}<li {if $_W['action'] == 'rule.verify.set'} class="active" {/if}><a href="{php echo webUrl('rule/verify/set')}">关键词设置</a></li>{/if}
+    </ul>
+    {/if}
+    {/if}

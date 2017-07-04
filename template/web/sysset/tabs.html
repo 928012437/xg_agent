@@ -1,0 +1,39 @@
+
+{ifp 'sysset.trade|sysset.payset'}
+<div class='menu-header'>交易</div>
+<ul>
+    {ifp 'sysset.trade'}<li  {if $_W['routes']=='sysset.trade'}class="active"{/if}><a href="{php echo webUrl('sysset/trade')}">交易设置</a></li>{/if}
+    {ifp 'sysset.payset'}<li  {if $_W['routes']=='sysset.payset'}class="active"{/if}><a href="{php echo webUrl('sysset/payset')}">支付方式</a></li>{/if}
+    
+</ul>
+{/if}
+
+{ifp 'sysset.notice|sysset.tmessage'}
+<div class='menu-header'>模板消息</div>
+<ul>
+    {ifp 'sysset.notice'}<li  {if $_W['routes']=='sysset.notice'}class="active"{/if}><a href="{php echo webUrl('sysset/notice')}">消息提醒</a></li>{/if}
+    {ifp 'sysset.tmessage'}<li {if $_W['routes']=='sysset.tmessage'}class="active"{/if}><a href="{php echo webUrl('sysset/tmessage')}">模板消息库</a></li>{/if}
+</ul>
+{/if}
+
+{ifp 'sysset.sms.set|sysset.sms.temp'}
+<div class='menu-header'>短信配置</div>
+<ul>
+
+    {ifp 'sysset.sms.set'}
+    <li  {if $_W['routes']=='sysset.sms.set'}class="active"{/if}><a href="{php echo webUrl('sysset/sms/set')}">短信接口设置</a></li>
+    {/if}
+    {ifp 'sysset.sms.temp'}
+    <li {if $_W['routes']=='sysset.sms.temp'}class="active"{/if}><a href="{php echo webUrl('sysset/sms/temp')}">短信消息库</a></li>
+    {/if}
+</ul>
+{/if}
+
+<!--{ifp 'sysset.cover.shop'}-->
+<!--<div class='menu-header'>入口</div>-->
+<!--<ul>-->
+    <!--{ifp 'sysset.cover.shop'}-->
+    <!--<li {if $_W['routes']=='sysset.cover.shop'}class="active"{/if}><a href="{php echo webUrl('sysset/cover/shop')}">用户入口</a></li>-->
+    <!--{/if}-->
+<!--</ul>-->
+<!--{/if}-->

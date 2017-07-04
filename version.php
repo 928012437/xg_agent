@@ -1,0 +1,1 @@
+<?php if(!defined('IN_IA')) {exit('Access Denied');}if(!defined('XG_AGENT_VERSION')) {define('XG_AGENT_VERSION', '1.0.0');}if(!defined('XG_AGENT_RELEASE')) {define('XG_AGENT_RELEASE', '20161219082500');}

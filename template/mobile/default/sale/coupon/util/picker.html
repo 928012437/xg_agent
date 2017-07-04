@@ -1,0 +1,48 @@
+<script id="tpl_coupons" type="text/html">
+	<div class="coupon-picker">
+		<div class="coupon-picker-title">请选择优惠券</div>
+		<div class="coupon-container coupon-picker-container">
+			<%each coupons as coupon%>
+		 <div class="coupon-item"
+			   data-couponname="<%coupon.couponname%>"
+			 data-couponid="<%coupon.id%>"
+			 data-deduct="<%coupon.deduct%>"
+			 data-discount="<%coupon.discount%>"
+			 data-backtype="<%coupon.backtype%>"
+			  >
+          <div class='bg cside side side-left'></div>
+	<div class="cthumb" <%if coupon.thumb==''%>style="width:8px;"<%/if%>> <%if coupon.thumb!=''%><img src='<%coupon.thumb%>' /><%/if%></div>
+	<div class="cinfo" >
+		<div class="inner" >
+			<div class="name"><%coupon.couponname%></div>
+			<div class="time">
+			<%if coupon.timestr==''%>
+			永久有效
+			<%else%>
+			<%if coupon.past%>已过期<%else%>
+			有效期 <%coupon.timestr%>
+			<%/if%>
+			<%/if%></div>
+		</div>
+	</div>
+	 <div class="cright">
+		   <div class="bg png png-<%coupon.css%>"></div>
+		   <div class="bg sideleft side side-<%coupon.css%>"></div>
+		   <div class="rinfo" >
+			   <div class='rinner <%coupon.css%>'>
+				 <div class="price"><%if coupon.backpre%>￥<%/if%><span><%coupon.backmoney%></span></div>
+				 <div class="type"><%coupon.backstr%></div>
+			   </div>
+		 </div>
+		   <div class="bg sideright side side-<%coupon.css%>"></div>
+
+	</div>
+</div>
+		<%/each%>
+		</div>
+		<div class="fui-navbar">
+			<a class="nav-item btn btn-default btn-cancel" >不使用优惠券</a>
+			<a class="nav-item btn btn-danger btn-confirm">确定使用</a>
+		</div>
+	</div>
+</script>

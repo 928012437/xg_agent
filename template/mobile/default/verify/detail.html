@@ -1,0 +1,91 @@
+{template '_header'}
+<div class='fui-page  fui-page-current'>
+    <div class="fui-header">
+	<div class="fui-header-left">
+	    <a class="back"></a>
+	</div>
+	<div class="title">订单核销</div> 
+	<div class="fui-header-right">&nbsp;</div>
+    </div>
+    <div class='fui-content navbar'>
+
+	<div class='fui-list-group'>
+	    <div class='fui-list order-status'>
+
+		<div class='fui-list-inner'>
+		    <div class='title'>{$order['logno']}</div>
+		    <div class='text'>订单金额: ￥{$goods['money']}+积分{$goods['credit']}</div>
+		</div>
+	    </div>
+	</div>
+
+	{if !empty($order['realname']) ||!empty($store)}
+
+	<div class='fui-list-group' style='margin-top:5px;'>
+
+	    <div class='fui-list'>
+		<div class='fui-list-media'><i class='icon icon-person2'></i></div>
+		<div class='fui-list-inner'>
+		    <div class='title'>{$order['realname']}</div>
+		</div>
+	    </div>
+	    {if !empty($store)}
+	    <div class='fui-list'>
+		<div class='fui-list-media'><i class='icon icon-shop'></i></div>
+		<div class='fui-list-inner'>
+		    <div class='title'>{$store['storename']}</div>
+		</div>
+	    </div>
+	    {/if}
+	</div>
+	{/if}
+
+	<div class="fui-list-group goods-list-group">  
+
+	    <div class="fui-list-group-title"><i class="icon icon-shop"></i> {$mtitle}</div>
+
+	    {loop $allgoods $g}
+	    <a href="{php echo mobileUrl('creditshop/detail',array('id'=>$g['id']))}">
+
+		<div class="fui-list goods-list">
+		    <div class="fui-list-media">
+			<img src="{php echo tomedia($g['thumb'])}" class="round">
+		    </div>
+		    <div class="fui-list-inner">
+			<div class="text goodstitle">{$g['title']}</div> 
+			{if !empty($g['optionid'])}<div class='subtitle'>{$g['optiontitle']}</div>{/if}
+
+		    </div>
+		    <div class='fui-list-angle'>
+			￥<span class='marketprice'>{$g['price']}<br/>   x{$g['total']}
+		    </div>
+
+		</div>
+	    </a>
+	    {/loop}
+	</div>
+
+
+	<div class='fui-cell-group'>
+	    <div class='fui-cell'>
+		<div class='fui-cell-label'>消费码</div>
+		<div class='fui-cell-info'></div>
+		<div class='fui-cell-remark noremark'>{$order['eno']}</div>
+	    </div>
+	</div>
+
+
+
+    </div>
+    <div class='fui-footer'>
+	<div class="btn btn-danger order-verify block" data-orderid="{$order['id']}" data-verifytype="{$order['verifytype']}">
+	    <i class="icon icon-check"></i> 
+	    <span>{if $order['dispatchtype']}确认取货{else}确定使用{/if}</span>
+	</div>
+
+    </div>
+    <script language='javascript'>require(['biz/verify/detail'], function (modal) {
+                modal.init();
+            });</script>
+</div>
+{template '_footer'}

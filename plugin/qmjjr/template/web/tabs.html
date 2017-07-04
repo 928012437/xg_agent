@@ -1,0 +1,31 @@
+<div class='menu-header'>{php echo $this->plugintitle}</div>
+<ul>
+    {ifp 'qmjjr.main'}<li {if $_GPC['r'] == 'qmjjr' || $_GPC['r'] == 'qmjjr.detail'}class="active"{/if}><a href="{php echo webUrl('qmjjr')}">经纪人管理</a></li>{/if}
+    {ifp 'qmjjr.identity.main'}<li {if $_GPC['r'] == 'qmjjr.identity'}class="active"{/if}><a href="{php echo webUrl('qmjjr/identity')}">身份管理</a></li>{/if}
+    {ifp 'qmjjr.question.main'}<li {if $_GPC['r'] == 'qmjjr.question'||$_GPC['r'] == 'qmjjr.questionpost'}class="active"{/if}><a href="{php echo webUrl('qmjjr/question')}">问题管理</a></li>{/if}
+
+    {ifp 'qmjjr.complain.main'}<li {if $_GPC['r'] == 'qmjjr.complain'||$_GPC['r'] == 'qmjjr.complainpost'}class="active"{/if}><a href="{php echo webUrl('qmjjr/complain')}">投诉与建议</a></li>{/if}
+    {ifp 'qmjjr.templatenews'}<li {if $_GPC['r'] == 'qmjjr.templatenews'}class="active"{/if}><a href="{php echo webUrl('qmjjr/templatenews')}">模板消息设置</a></li>{/if}
+    {ifp 'qmjjr.jjrrule.main'}<li {if $_GPC['r'] == 'qmjjr.jjrrule'}class="active"{/if}><a href="{php echo webUrl('qmjjr/jjrrule')}">佣金积分规则设置</a></li>{/if}
+</ul>
+<div class='menu-header'>佣金积分订单管理</div>
+<ul>
+    {ifp 'qmjjr.commis.quanbu'}<li {if $_GPC['r']=='qmjjr.quanbu'}class="active"{/if}><a href="{php echo webUrl('qmjjr/quanbu')}">全部<span style="float: right;margin-right: 20px;" >{php echo $this->getordernum(5)}</span></a></li>{/if}
+    {ifp 'qmjjr.commis.sh_no'}<li {if $_GPC['r']=='qmjjr.sh_no'||$_GPC['r']=='qmjjr.sh_no_detail'}class="active"{/if}><a href="{php echo webUrl('qmjjr/sh_no')}">待审核<span class="text-danger" style="float: right;margin-right: 20px;" >{php echo $this->getordernum(1)}</span></a></li>{/if}
+    {ifp 'qmjjr.commis.dk_no'}<li {if $_GPC['r']=='qmjjr.dk_no'||$_GPC['r']=='qmjjr.dk_no_detail'}class="active"{/if}><a href="{php echo webUrl('qmjjr/dk_no')}">待打款<span style="float: right;margin-right: 20px;" >{php echo $this->getordernum(2)}</span></a></li>{/if}
+    {ifp 'qmjjr.commis.dk_ok'}<li {if $_GPC['r']=='qmjjr.dk_ok'||$_GPC['r']=='qmjjr.dk_ok_detail'}class="active"{/if}><a href="{php echo webUrl('qmjjr/dk_ok')}">已打款<span class="text-success" style="float: right;margin-right: 20px;" >{php echo $this->getordernum(3)}</span></a></li>{/if}
+    {ifp 'qmjjr.commis.wuxiao'}<li {if $_GPC['r']=='qmjjr.wuxiao'||$_GPC['r']=='qmjjr.wuxiao_detail'}class="active"{/if}><a href="{php echo webUrl('qmjjr/wuxiao')}">无效的<span class="text-default" style="float: right;margin-right: 20px;" >{php echo $this->getordernum(4)}</span></a></li>{/if}
+</ul>
+
+
+{ifp 'qmjjr.cover'||'qmjjr.rule'}
+<div class='menu-header'>设置</div>
+
+<ul>
+{if $_W['isfounder']}
+    <li {if $_GPC['r'] == 'qmjjr.massproduction'}class="active"{/if}><a href="{php echo webUrl('qmjjr/massproduction')}">批量导入经纪人</a></li>
+    {/if}
+    <li {if $_GPC['r'] == 'qmjjr.rule'}class="active"{/if}><a href="{php echo webUrl('qmjjr/rule')}">基本设置</a></li>
+    <li {if $_GPC['r'] == 'qmjjr.cover'}class="active"{/if}><a href="{php echo webUrl('qmjjr/cover')}">经纪人入口设置</a></li>
+</ul>
+{/if}

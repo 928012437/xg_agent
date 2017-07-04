@@ -1,0 +1,25 @@
+<style type='text/css'>
+    .goods-list a {
+        position: relative;
+    }
+    .goods-list span  {
+        float:right;margin-right:20px;
+
+    }
+</style>
+
+{ifp 'business'}
+<div class='menu-header'>团队管理</div>
+<ul>
+    {ifp 'business.main'}<li {if $_GPC['r'] == 'business'  }class="active" {/if}><a href="{php echo webUrl('business')}">团队管理</a></li>{/if}
+    {ifp 'business.userlist.main'}<li {if $_GPC['r'] == 'business.userlist' || $_GPC['r'] == 'business.detail' }class="active" {/if}><a href="{php echo webUrl('business/userlist')}">团队人员管理</a></li>{/if}
+</ul>
+
+{/if}
+
+{ifp 'business.cover'}
+<div class='menu-header'>入口设置</div>
+<ul>
+    <li {if $_GPC['r'] == 'business.cover' }class="active" {/if}><a href="{php echo webUrl('business/cover')}">用户入口设置</a></li>
+</ul>
+{/if}

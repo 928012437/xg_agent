@@ -1,0 +1,281 @@
+{template '_header'}
+
+<div class="page-heading"> <h2>经纪人管理</h2> </div>
+
+<div class="page-toolbar row m-b-sm m-t-sm">
+    <div class="col-sm-4">
+
+        <div class="input-group-btn">
+            <button class="btn btn-default btn-sm" type="button" data-toggle="refresh" onclick="location.href = ''"><i class="fa fa-refresh"></i></button>
+            {ifp 'qmjjr.status'}
+            <div class="btn-group btn-group-sm">
+                <button data-toggle="dropdown" class="btn btn-default" aria-expanded="false">黑名单 <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="btn jud_a" data-toggle="batch" data-href="{php echo webUrl('qmjjr/status',array('status'=>0))}" data-confirm="确认要设置黑名单？" >设置黑名单</a></li>
+                    <li><a class="btn jud_a" data-toggle="batch" data-href="{php echo webUrl('qmjjr/status',array('status'=>1))}" data-confirm="确认要取消黑名单？" >取消黑名单</a></li>
+                </ul>
+            </div>
+            {/if}
+
+            {ifp 'qmjjr.review'}
+            <div class="btn-group btn-group-sm">
+                <button data-toggle="dropdown" class="btn btn-default" aria-expanded="false">审核 <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="btn jud_a" data-toggle="batch" data-href="{php echo webUrl('qmjjr/review',array('review'=>1))}" data-confirm="确认要审核通过？" >审核通过</a></li>
+                    <li><a class="btn jud_a" data-toggle="batch" data-href="{php echo webUrl('qmjjr/review',array('review'=>0))}" data-confirm="确认要取消审核？" >取消审核</a></li>
+                </ul>
+            </div>
+            {/if}
+
+            {ifp 'qmjjr.recharge.credit1'}
+            <button class="btn btn-default btn-sm" type="button" data-toggle='batch' onclick="allot();">
+                <i class='fa fa-credit-card'></i> 充值积分
+            </button>
+            <script language="javascript">
+                function allot() {
+
+                    var x = document.getElementsByName("select");
+
+                    var flag = false;
+
+                    var j = 0;
+
+                    var selected = new Array();
+
+                    for (var i = 0; i < x.length; i++) {
+
+                        if (x[i].checked == true) {
+
+                            selected[j] = x[i].value;
+
+                            flag = true;
+
+                            j++;
+
+                        }
+
+                    }
+
+                    if (flag) {
+
+
+
+                    } else {
+
+                        alert('您还未选择需要操作的经纪人！');
+
+                        return;
+
+                    }
+
+                    window.location.href = "{php echo webUrl('qmjjr/batcredit')}&selected=" + selected;
+
+                }
+
+            </script>
+
+            {/if}
+
+            {ifp 'qmjjr.delete'}
+            <button class="btn btn-default btn-sm jud_a" type="button" data-toggle="batch-remove" data-href="{php echo webUrl('qmjjr/delete')}" data-confirm="确定删除？" ><i class="fa fa-trash"></i> 删除</button>
+            {/if}
+        </div>
+    </div>
+
+    <form action="" method="post" >
+
+        <div class="col-sm-6 pull-right">
+
+            <div class="input-group">
+                <input type="text" class="form-control input-sm" name="sort" value="{$sort}" placeholder="可搜索姓名/手机号/ID">
+                        <span class="input-group-btn">
+
+                            <button class="btn btn-sm btn-primary" type="submit"> 搜索</button>
+                            <button type="submit" name="export" value="1" class="btn btn-success btn-sm">导出</button>
+                            <button class="btn btn-sm btn-default" type="button" onclick="$('#moresearch').toggle()"> 其他 <i class="fa fa-angle-down"></i></button>
+                        </span>
+            </div>
+
+        </div>
+</div>
+
+<div class="page-toolbar row" style="display: none;" id="moresearch">
+
+
+    <div class="col-sm-12">
+
+        <select name="review" class="form-control  input-sm select-md" style="width:140px">
+            <option value="">状态</option>
+            <option value="1">已审核</option>
+            <option value="0">未审核</option>
+        </select>
+
+
+        <select name="sfid" class="form-control  input-sm select-md" style="width:140px;">
+            <option value="">身份</option>
+            {loop $idens $s}
+            <option value="{$s['id']}">{$s['name']}</option>
+            {/loop}
+        </select>
+
+
+
+        <script type="text/javascript">
+            require(["daterangepicker"], function ($) {
+                $(function () {
+                    $(".daterange.daterange-time").each(function () {
+
+                        var elm = this;
+                        var container = $(elm).parent().prev();
+                        $(this).daterangepicker({
+                            format: "YYYY-MM-DD HH:mm",
+                            timePicker: true,
+                            timePicker12Hour: false,
+                            timePickerIncrement: 1,
+                            minuteStep: 1
+                        }, function (start, end) {
+                            $(elm).find(".date-title").html(start.toDateTimeStr() + " 至 " + end.toDateTimeStr());
+                            container.find(":input:first").val(start.toDateTimeStr());
+                            container.find(":input:last").val(end.toDateTimeStr());
+                        });
+                    });
+                });
+            });
+            function clearTime(obj) {
+
+                $(obj).prev().html("<span class=date-title>" + $(obj).attr("placeholder") + "</span>");
+                $(obj).parent().prev().find("input").val("");
+            }
+        </script>
+        <div style="float:left">
+            <input name="time[start]" type="hidden" value="">
+            <input name="time[end]" type="hidden" value="">
+        </div>
+        <div class="btn-group btn-group-sm" style="padding-right:0;">
+
+            <button style="width:240px" class="btn btn-default daterange daterange-time btn-sm" type="button"><span class="date-title">注册时间</span></button>
+            <button class="btn btn-default btn-sm" "="" type="button" onclick="clearTime(this);
+            $('#moresearch').hide()" placeholder="注册时间"><i class="fa fa-remove"></i></button>
+        </div>
+
+    </div>
+
+</div>
+</form>
+
+<table class="table table-hover table-responsive">
+    <thead class="navbar-inner">
+    <tr>
+        <th style="width:25px;"><input type="checkbox"  ></th>
+        <th style="width:120px;">头像/昵称</th>
+        <th style="width:100px;">姓名/手机号</th>
+        <th style="width:100px;">身份分组</th>
+
+        <th style="width:100px;">累计佣金/余额/积分</th>
+
+        <th style="width:100px;">注册时间</th>
+        <th style="width:100px;">审核时间</th>
+
+        <th style="width:100px;">状态</th>
+
+        <th style="width:100px;">关注</th>
+        <th style="width:70px;">操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {loop $list $v}
+    <tr rel="pop" data-title="" data-content="" data-original-title="" title="">
+        <td style="position: relative; ">
+            <input type="checkbox" name="select" value="{$v['id']}" ></td>
+
+        <td><img src="{if $v['headurl']==''}{php echo XG_AGENT_LOCAL}static/images/userhead.png{else}{$v['headurl']}{/if}" style="width:30px;height:30px;padding1px;border:1px solid #ccc">{$v['nickname']}</td>
+        <td>{$v['realname']}<br/>{$v['mobile']}</td>
+
+        <td>{$v['sfid']}</td>
+
+        <td>{$v['commission']}</br>{$v['credit2']}</br>{$v['credit1']}</td>
+
+        <td>{php echo date('Y-m-d',$v['createtime'])}</td>
+        <td>{php echo date('Y-m-d',$v['shtime'])}</td>
+
+        <td>
+            {if $v['status']==0}
+
+            <span class="label label-important">黑名单</span>
+
+            {else}
+
+            <span class="label label-success">正常</span>
+
+            {/if}
+            <br/>
+            {if $v['review']==0}
+
+            <span class="label label-important">未审核</span>
+
+            {else}
+
+            <span class="label label-success">已审核</span>
+
+            {/if}
+
+        </td>
+        <td>
+
+            {if $v['is_gz']==0}
+
+            <span class="label label-important">未关注</span>
+
+            {else}
+
+            <span class="label label-success">已关注</span>
+
+            {/if}
+
+        </td>
+
+        <td style="overflow:visible;">
+            <div class="btn-group btn-group-sm" >
+
+                <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false" href="javascript:;">操作 <span class="caret"></span></a>
+
+                <ul class="dropdown-menu dropdown-menu-left" role="menu" style='z-index: 9999'>
+
+                    {ifp 'qmjjr.detail'}
+                    <li><a href="{php echo webUrl('qmjjr/detail',array('id' => $v['id']));}" title="详情"><i class='fa fa-edit'></i> 详情</a></li>
+                    {/if}
+
+                    {ifp 'qmjjr.jcustomer'}
+                    <li><a  href="{php echo webUrl('customer', array('id'=>$v['id']))}" title='客户'><i class='fa fa-list'></i> 客户</a></li>
+                    {/if}
+
+                    {ifp 'qmjjr.jxiaji'}
+                    <li><a  href="{php echo webUrl('qmjjr',array('id' => $v['id']));}" title='下级'><i class='fa fa-group'></i> 下级</a></li>
+                    {/if}
+
+                    <li class="divider"></li>
+
+                    {ifp 'qmjjr.recharge.credit1'}<li><a data-toggle="ajaxModal" href="{php echo webUrl('finance/recharge', array('type'=>'credit1','id'=>$v['id']))}" title='充值积分'><i class='fa fa-credit-card'></i> 充值积分</a></li>{/if}
+                    {ifp 'qmjjr.recharge.credit2'}<li><a data-toggle="ajaxModal" href="{php echo webUrl('finance/recharge', array('type'=>'credit2','id'=>$v['id']))}" title='充值余额'><i class='fa fa-money'></i> 充值余额 </a></li>{/if}
+
+                    {ifp 'qmjjr.mcommis'}
+                    <li><a  href="{php echo webUrl('qmjjr/quanbu',array('id' => $v['id']));}" title='查看订单'><i class='fa fa-group'></i> 查看订单</a></li>
+                    {/if}
+
+                    {ifp 'qmjjr.delete'}
+                    <li><a data-toggle="ajaxRemove" href="{php echo webUrl('qmjjr/delete',array('id' => $v['id']));}" title='删除经济人' data-confirm="确定要删除该经济人吗？"><i class='fa fa-remove'></i> 删除</a></li>
+                    {/if}
+                </ul>
+
+            </div>
+
+        </td>
+    </tr>
+    {/loop}
+    </tbody>
+</table>
+{$pager}
+
+{template '_footer'}

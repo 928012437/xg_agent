@@ -1,0 +1,23 @@
+<style type='text/css'>
+    .goods-list a {
+        position: relative;
+    }
+    .goods-list span  {
+        float:right;margin-right:20px;
+
+    }
+</style>
+
+{ifp 'report'}
+<div class='menu-header'>项目管理</div>
+<ul>
+    {ifp 'report.rep1'}<li {if $_GPC['op']=='display'||empty($_GPC['op'])}class="active"{/if}><a href="{php echo webUrl('report', array('op'=>'display'))}">经纪人增长趋势</a></li>{/if}
+    {ifp 'report.rep2'}<li {if $_GPC['op']=='customer'}class="active"{/if}><a href="{php echo webUrl('report', array('op'=>'customer'))}">客户增长趋势</a></li>{/if}
+    {ifp 'report.rep3'}<li {if $_GPC['op']=='lpcustomernum'}class="active"{/if}><a href="{php echo webUrl('report', array('op'=>'lpcustomernum'))}">楼盘客户数</a></li>{/if}
+    {ifp 'report.rep4'}<li {if $_GPC['op']=='arealoupan'}class="active"{/if}><a href="{php echo webUrl('report', array('op'=>'arealoupan'))}">区域楼盘数</a></li>{/if}
+    {ifp 'report.rep5'}<li {if $_GPC['op']=='loupansuccess'}class="active"{/if}><a href="{php echo webUrl('report', array('op'=>'loupansuccess'))}">楼盘成交量</a></li>{/if}
+    {ifp 'report.rep6'}<li {if $_GPC['op']=='cusstatus'}class="active"{/if}><a href="{php echo webUrl('report', array('op'=>'cusstatus'))}">客户各状态数</a></li>{/if}
+    {ifp 'report.rep7'}<li {if $_GPC['op']=='activecus'}class="active"{/if}><a href="{php echo webUrl('report', array('op'=>'activecus'))}">活跃经纪人推荐量</a></li>{/if}
+    {ifp 'report.rep8'}<li {if $_GPC['op']=='activemem'}class="active"{/if}><a href="{php echo webUrl('report', array('op'=>'activemem'))}">活跃经纪人类型</a></li>{/if}
+</ul>
+{/if}

@@ -1,0 +1,571 @@
+{template '_header'}
+
+<div class="page-heading">
+    <h2>跟进设置</h2> </div>
+
+<form action="" method="post" class="form-horizontal form form-validate" enctype="multipart/form-data">
+
+    <div class="panel panel-default">
+
+        <div class="panel-heading">
+
+            跟进状态设置
+
+        </div>
+
+        <div id='marks'>
+
+            {if empty($custsts)}
+
+            <div class="form-group" style="padding-top:12px;">
+
+                <div>
+
+                    <div class="col-sm-6">
+
+                        <div class="input-group">
+
+                            <span class="input-group-addon">顺序</span>
+
+                            <input type="text" name="displayorder[]" class="form-control" style="width:45px;" value="" placeholder="" />
+
+                            <span class="input-group-addon">名称</span>
+
+                            <input type="text" name="name[]" class="form-control" style="width:90px;" value="" placeholder="" />
+
+                            <span class="input-group-addon">经纪人名称</span>
+
+                            <input type="text" name="jjrname[]" class="form-control" style="width:90px;" value="" placeholder="" />
+
+                            <span class="input-group-addon">保护周期(天)</span>
+
+                            <input type="text" name="baohuqi[]" class="form-control" style="width:90px;" value="" placeholder="" />
+
+                            <span class="input-group-addon">提前提醒(天)</span>
+
+                            <input type="text" name="tixing[]" class="form-control" style="width:90px;" value="" placeholder="" />
+
+                            <span class="input-group-addon">类别</span>
+
+                            <select class="form-control" name="type[]" style="width:100px;">
+                                <option value="0">跟进</option>
+                                <option value="1">催办</option>
+                            </select>
+
+                            <span class="input-group-addon" style="color:red; cursor:pointer;" onclick="deletethis(this, 0)">X</span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {else}
+
+            {loop $custsts $key $s}
+
+            <div class="form-group" {if $key==0}style="padding-top:12px;"{/if}>
+
+                <div>
+
+                    <input type="hidden" name="csid[]" value="{$s['id']}"/>
+
+                    <div class="col-sm-6">
+
+                        <div class="input-group" >
+
+                            <span class="input-group-addon">顺序</span>
+
+                            <input type="text" name="displayorder[]" class="form-control" style="width:45px;" value="{$s['displayorder']}" placeholder="" />
+
+                            <span class="input-group-addon">名称</span>
+
+                            <input type="text" name="name[]" class="form-control" style="width:90px;" value="{$s['name']}" placeholder="" />
+
+                            <span class="input-group-addon">经纪人名称</span>
+
+                            <input type="text" name="jjrname[]" class="form-control" style="width:90px;" value="{$s['name2']}" placeholder="" />
+
+                            <span class="input-group-addon">保护周期(天)</span>
+
+                            <input type="text" name="baohuqi[]" class="form-control" style="width:90px;" value="{$s['baohuqi']}" placeholder="" />
+
+                            <span class="input-group-addon">提前提醒(天)</span>
+
+                            <input type="text" name="tixing[]" class="form-control" style="width:90px;" value="{$s['tixing']}" value="" placeholder="" />
+
+                            <span class="input-group-addon">类别</span>
+
+                            <select class="form-control" name="type[]" style="width:100px;" >
+                                <option value="0" {if $s['type']==0}selected{/if}>跟进</option>
+                                <option value="1" {if $s['type']==1}selected{/if}>催办</option>
+                            </select>
+
+                            <span class="input-group-addon" style="color:red; cursor:pointer;" onclick="deletethis(this, {$s['id']})">X</span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {/loop}
+
+            {/if}
+
+        </div>
+
+        <div class="form-group">
+
+            <label class="col-xs-12 col-sm-3 col-md-2 col-lg-1 control-label"></label>
+
+            <div class="col-sm-9" style="color:red; cursor:pointer;" onclick="addCustomerStatus();">
+
+                添加跟进状态+
+
+            </div>
+
+        </div>
+
+        <div class="panel-heading">
+
+            跟进方式设置
+
+        </div>
+
+        <div id='marks2'>
+
+            {if empty($gjfs)}
+
+            <div class="form-group" style="padding-top:12px;">
+                <label class="col-xs-12 col-sm-3 col-md-2 col-lg-1 control-label"></label>
+
+                <div>
+
+                    <div class="col-sm-6">
+
+                        <div class="input-group">
+
+                            <span class="input-group-addon">名称</span>
+
+                            <input type="text" name="name2[]" class="form-control"  value="" placeholder="" />
+
+                            <span class="input-group-addon" style="color:red; cursor:pointer;" onclick="deletethis2(this, 0)">X</span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {else}
+
+            {loop $gjfs $key $s}
+
+            <div class="form-group" {if $key==0}style="padding-top:12px;"{/if}>
+
+                <label class="col-xs-12 col-sm-3 col-md-2 col-lg-1 control-label"></label>
+
+                <div>
+
+                    <input type="hidden" name="csid2[]" value="{$s['id']}"/>
+
+                    <div class="col-sm-6">
+
+                        <div class="input-group" >
+
+                            <span class="input-group-addon">名称</span>
+
+                            <input type="text" name="name2[]" class="form-control"  value="{$s['name']}" placeholder="" />
+
+                            <span class="input-group-addon" style="color:red; cursor:pointer;" onclick="deletethis2(this, {$s['id']})">X</span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {/loop}
+
+            {/if}
+
+        </div>
+
+        <div class="form-group">
+
+            <label class="col-xs-12 col-sm-3 col-md-2 col-lg-1 control-label"></label>
+
+            <div class="col-sm-9" style="color:red; cursor:pointer;" onclick="addCustomerStatus2();">
+
+                添加跟进方式+
+
+            </div>
+
+        </div>
+
+        <div class="panel-heading">
+
+            意向级别设置
+
+        </div>
+
+        <div id='marks3'>
+
+            {if empty($yxjb)}
+
+            <div class="form-group" style="padding-top:12px;">
+                <label class="col-xs-12 col-sm-3 col-md-2 col-lg-1 control-label"></label>
+
+                <div>
+
+                    <div class="col-sm-6">
+
+                        <div class="input-group">
+
+                            <span class="input-group-addon">名称</span>
+
+                            <input type="text" name="name3[]" class="form-control"  value="" placeholder="" />
+
+                            <span class="input-group-addon" style="color:red; cursor:pointer;" onclick="deletethis3(this, 0)">X</span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {else}
+
+            {loop $yxjb $key $s}
+
+            <div class="form-group" {if $key==0}style="padding-top:12px;"{/if}>
+
+                <label class="col-xs-12 col-sm-3 col-md-2 col-lg-1 control-label"></label>
+
+                <div>
+
+                    <input type="hidden" name="csid3[]" value="{$s['id']}"/>
+
+                    <div class="col-sm-6">
+
+                        <div class="input-group" >
+
+                            <span class="input-group-addon">名称</span>
+
+                            <input type="text" name="name3[]" class="form-control"  value="{$s['name']}" placeholder="" />
+
+                            <span class="input-group-addon" style="color:red; cursor:pointer;" onclick="deletethis3(this, {$s['id']})">X</span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {/loop}
+
+            {/if}
+
+        </div>
+
+        <div class="form-group">
+
+            <label class="col-xs-12 col-sm-3 col-md-2 col-lg-1 control-label"></label>
+
+            <div class="col-sm-9" style="color:red; cursor:pointer;" onclick="addCustomerStatus3();">
+
+                添加意向级别+
+
+            </div>
+
+        </div>
+
+        <div class="panel-heading">
+
+            跟进内容常用语设置
+
+        </div>
+
+        <div id='marks4'>
+
+            {if empty($gjnr)}
+
+            <div class="form-group" style="padding-top:12px;">
+                <label class="col-xs-12 col-sm-3 col-md-2 col-lg-1 control-label"></label>
+
+                <div>
+
+                    <div class="col-sm-6">
+
+                        <div class="input-group">
+
+                            <span class="input-group-addon">内容</span>
+
+                            <input type="text" name="name4[]" class="form-control"  value="" placeholder="" />
+
+                            <span class="input-group-addon" style="color:red; cursor:pointer;" onclick="deletethis4(this, 0)">X</span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {else}
+
+            {loop $gjnr $key $s}
+
+            <div class="form-group" {if $key==0}style="padding-top:12px;"{/if}>
+
+                <label class="col-xs-12 col-sm-3 col-md-2 col-lg-1 control-label"></label>
+
+                <div>
+
+                    <input type="hidden" name="csid4[]" value="{$s['id']}"/>
+
+                    <div class="col-sm-6">
+
+                        <div class="input-group" >
+
+                            <span class="input-group-addon">内容</span>
+
+                            <input type="text" name="name4[]" class="form-control"  value="{$s['cont']}" placeholder="" />
+
+                            <span class="input-group-addon" style="color:red; cursor:pointer;" onclick="deletethis4(this, {$s['id']})">X</span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {/loop}
+
+            {/if}
+
+        </div>
+
+        <div class="form-group">
+
+            <label class="col-xs-12 col-sm-3 col-md-2 col-lg-1 control-label"></label>
+
+            <div class="col-sm-9" style="color:red; cursor:pointer;" onclick="addCustomerStatus4();">
+
+                添加跟进内容常用语+
+
+            </div>
+
+        </div>
+
+
+        <div class="form-group col-sm-12">
+
+            <input type="hidden" name="token" value="{$_W['token']}" />
+
+            <button class="btn btn-primary allot" type="submit"  >提交</button>
+
+        </div>
+
+    </div>
+
+</form>
+
+<script>
+
+    function addCustomerStatus(obj){
+
+
+
+        var insert = '';
+
+        insert = "<div class='form-group'><div class='col-sm-6'><div class='input-group' ><span class='input-group-addon'>顺序</span><input type='text' name='displayorder[]' class='form-control' style='width:45px;' value='' placeholder='' /><span class='input-group-addon'>名称</span><input type='text' name='name[]' class='form-control' style='width:90px;' value='' placeholder='' /><span class='input-group-addon'>经纪人名称</span><input type='text' name='jjrname[]' class='form-control' style='width:90px;' value='' placeholder='' /><span class='input-group-addon'>保护周期(天)</span><input type='text' name='baohuqi[]' class='form-control' style='width:90px;'value='' placeholder='' /><span class='input-group-addon'>提前提醒(天)</span><input type='text' name='tixing[]' class='form-control' style='width:90px;'value='' placeholder='' /><span class='input-group-addon'>类别</span><select class='form-control' name='type[]' style='width:100px;'><option value='0'>跟进</option><option value='1'>催办</option></select><span class='input-group-addon' style='color:red; cursor:pointer;' onclick='deletethis(this, 0)'>X</span></div></div></div>";
+        $("#marks").append(insert);
+        //document.getElementById('marks').innerHTML = document.getElementById('marks').innerHTML + insert;
+
+
+
+        return;
+    }
+    function addCustomerStatus2(obj){
+
+
+
+        var insert = '';
+        insert = "<div class='form-group' style='padding-top:12px;'><label class='col-xs-12 col-sm-3 col-md-2 col-lg-1 control-label'></label><div><div class='col-sm-6'><div class='input-group'><span class='input-group-addon'>名称</span><input type='text' name='name2[]' class='form-control'  value='' placeholder='' /><span class='input-group-addon' style='color:red; cursor:pointer;' onclick='deletethis2(this, 0)'>X</span></div></div></div></div>";
+        $("#marks2").append(insert);
+        //document.getElementById('marks').innerHTML = document.getElementById('marks').innerHTML + insert;
+
+
+
+        return;
+    }
+    function addCustomerStatus3(obj){
+
+
+
+        var insert = '';
+        insert = "<div class='form-group' style='padding-top:12px;'><label class='col-xs-12 col-sm-3 col-md-2 col-lg-1 control-label'></label><div><div class='col-sm-6'><div class='input-group'><span class='input-group-addon'>名称</span><input type='text' name='name3[]' class='form-control'  value='' placeholder='' /><span class='input-group-addon' style='color:red; cursor:pointer;' onclick='deletethis3(this, 0)'>X</span></div></div></div></div>";
+        $("#marks3").append(insert);
+        //document.getElementById('marks').innerHTML = document.getElementById('marks').innerHTML + insert;
+
+
+
+        return;
+    }
+    function addCustomerStatus4(obj){
+
+
+
+        var insert = '';
+        insert = "<div class='form-group' style='padding-top:12px;'><label class='col-xs-12 col-sm-3 col-md-2 col-lg-1 control-label'></label><div><div class='col-sm-6'><div class='input-group'><span class='input-group-addon'>内容</span><input type='text' name='name4[]' class='form-control'  value='' placeholder='' /><span class='input-group-addon' style='color:red; cursor:pointer;' onclick='deletethis4(this, 0)'>X</span></div></div></div></div>";
+        $("#marks4").append(insert);
+        //document.getElementById('marks').innerHTML = document.getElementById('marks').innerHTML + insert;
+
+
+
+        return;
+    }
+
+
+
+    function deletethis(obj, id){
+
+        if (id > 0){
+
+            if (confirm('是否确认删除该跟进状态？删除不可逆！')){
+
+                $.post("{php echo webUrl('customer/delete1')}"
+
+                        , {id:id}
+
+                        , function(d){
+
+                            if (d == 1){
+
+                                obj.parentNode.parentNode.parentNode.remove();
+                            }
+
+                        }
+
+                        , "json"
+
+                );
+            }
+
+        } else {
+
+            obj.parentNode.parentNode.parentNode.remove();
+        }
+
+    }
+    function deletethis2(obj, id){
+
+        if (id > 0){
+
+            if (confirm('是否确认删除该跟进方式？删除不可逆！')){
+
+                $.post("{php echo webUrl('customer/delete2')}"
+
+                        , {id:id}
+
+                        , function(d){
+
+                            if (d == 1){
+
+                                obj.parentNode.parentNode.parentNode.remove();
+                            }
+
+                        }
+
+                        , "json"
+
+                );
+            }
+
+        } else {
+
+            obj.parentNode.parentNode.parentNode.remove();
+        }
+
+    }
+    function deletethis3(obj, id){
+
+        if (id > 0){
+
+            if (confirm('是否确认删除该意向级别？删除不可逆！')){
+
+                $.post("{php echo webUrl('customer/delete3')}"
+
+                        , {id:id}
+
+                        , function(d){
+
+                            if (d == 1){
+
+                                obj.parentNode.parentNode.parentNode.remove();
+                            }
+
+                        }
+
+                        , "json"
+
+                );
+            }
+
+        } else {
+
+            obj.parentNode.parentNode.parentNode.remove();
+        }
+
+    }
+    function deletethis4(obj, id){
+
+        if (id > 0){
+
+            if (confirm('是否确认删除该跟进内容常用语？删除不可逆！')){
+
+                $.post("{php echo webUrl('customer/delete4')}"
+
+                        , {id:id}
+
+                        , function(d){
+
+                            if (d == 1){
+
+                                obj.parentNode.parentNode.parentNode.remove();
+                            }
+
+                        }
+
+                        , "json"
+
+                );
+            }
+
+        } else {
+
+            obj.parentNode.parentNode.parentNode.remove();
+        }
+
+    }
+
+</script>
+
+{template '_footer'}

@@ -1,0 +1,245 @@
+{template '_header'}
+
+<script type="text/javascript" src="../addons/xg_jjr/style/js/FusionCharts.js"></script>
+
+<div class="main">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            {php echo date('Y-m-d', $starttime)} 至 {php echo date('Y-m-d', $endtime)} {$caption}
+        </div>
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-2 col-md-2 col-lg-3 control-label">选择日期&nbsp;&nbsp;{php echo tpl_form_field_daterange('datelimit', array('starttime'=>date('Y-m-d', $starttime), 'endtime'=>date('Y-m-d', $endtime)))}</label>
+                {if $logtype != 5}
+                <label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label">选择区域</label>
+                <div class="col-sm-1" style="width:12%; padding-left:0px;">
+                    <select name="location_p" id="location_p" onchange="selectp(this.value)" class="location span2 form-control">
+                        <option value="">请选择省份..</option>
+                        {loop $location_ps $p}
+                        <option value="{$p['location_p']}" {if $location_p==$p['location_p']}selected{/if}>{$p['location_p']}</option>
+                        {/loop}
+                    </select>
+                </div>
+                <div class="col-sm-1" style="width:12%; padding-left:0px;">
+                    <select name="location_c" id="location_c" onchange="selectc(this.value)" class="location span2 form-control">
+                        <option value="">请选择市/县..</option>
+                        {loop $location_cs $c}
+                        <option value="{$c['location_c']}" {if $location_c==$c['location_c']}selected{/if}>{$c['location_c']}</option>
+                        {/loop}
+                    </select>
+                </div>
+                <div class="col-sm-1" style="width:12%; padding-left:0px;">
+                    <select name="location_a" id="location_a" onchange="selecta(this.value)" class="location span2 form-control">
+                        <option value="">请选择区..</option>
+                        {loop $location_as $a}
+                        <option value="{$a['location_a']}" {if $location_a==$a['location_a']}selected{/if}>{$a['location_a']}</option>
+                        {/loop}
+                    </select>
+                </div>
+                {if $logtype==4 || $logtype==6 || $logtype==7 || $logtype==8}
+                <div class="col-sm-1" style="width:12%; padding-left:0px;">
+                    <select name="lid" id="lid" class="location span2 form-control">
+                        <option value="">请选择楼盘..</option>
+                        {loop $loupanss $l}
+                        <option value="{$l['id']}" {if $lid==$l['id']}selected{/if}>{$l['title']}</option>
+                        {/loop}
+                    </select>
+                </div>
+                {/if}
+                {/if}
+                <div class="col-sm-1">
+                    <button type="text" onclick="sort();" class="btn btn-default"><i class="fa fa-search"></i>搜索</button>
+                </div>
+            </div>
+        </div>
+        {if $logtype == 1}
+        <input type="hidden" id="op" value="lpcustomernum"/>
+        <div id="chartdiv" class="box-content">
+        </div>
+        <script type="text/javascript">
+            var chart = new FusionCharts("../addons/xg_jjr/style/graph/Column3D.swf", "ChartId", "100%", "400", "0", "0");
+            chart.setXMLUrl("{php echo webUrl('report', $condition)}&pp=xml");
+            chart.render("chartdiv");
+        </script>
+        {/if}
+        {if $logtype == 2}
+        <input type="hidden" id="op" value="arealoupan"/>
+        <div id="chartdiv" class="box-content">
+        </div>
+        <script type="text/javascript">
+            var chart = new FusionCharts("../addons/xg_jjr/style/graph/Doughnut3D.swf", "ChartId", "100%", "400", "0", "0");
+            chart.setXMLUrl("{php echo webUrl('report', $condition)}&pp=xml");
+            chart.render("chartdiv");
+        </script>
+        {/if}
+        {if $logtype == 3}
+        <input type="hidden" id="op" value="loupansuccess"/>
+        <div id="chartdiv" class="box-content">
+        </div>
+        <script type="text/javascript">
+            var chart = new FusionCharts("../addons/xg_jjr/style/graph/MSLine.swf", "ChartId", "100%", "400", "0", "0");
+            chart.setXMLUrl("{php echo webUrl('report', $condition)}&pp=xml");
+            chart.render("chartdiv");
+        </script>
+        {/if}
+        {if $logtype == 4}
+        <input type="hidden" id="op" value="cusstatus"/>
+        <div id="chartdiv" class="box-content">
+        </div>
+        <script type="text/javascript">
+            var chart = new FusionCharts("../addons/xg_jjr/style/graph/Doughnut2D.swf", "ChartId", "100%", "400", "0", "0");
+            chart.setXMLUrl("{php echo webUrl('report', $condition)}&pp=xml");
+            chart.render("chartdiv");
+        </script>
+        {/if}
+        {if $logtype == 5}
+        <div class="panel panel-default">
+            <div class="account-stat">
+                <div class="account-stat-btn">
+                    <div>新增数量<span>{$membernum}</span></div>
+                    <div>推荐客户<span>{$tjnum}</span></div>
+                    <div>成交房产<span>{$success_loupannum}</span></div>
+                    <div>推荐客户的经纪人<span>{$tjcus_membernum}</span></div>
+                </div>
+            </div>
+        </div>
+        <style>
+            .account-stat{overflow:hidden; color:#666;}
+            .account-stat .account-stat-btn{width:100%; overflow:hidden;}
+            .account-stat .account-stat-btn > div{text-align:center; margin-bottom:5px;margin-right:2%; float:left;width:23%; height:80px; padding-top:10px;font-size:16px; border-left:1px #DDD solid;}
+            .account-stat .account-stat-btn > div:first-child{border-left:0;}
+            .account-stat .account-stat-btn > div span{display:block; font-size:30px; font-weight:bold}
+        </style>
+        <input type="hidden" id="op" value="display"/>
+        <div id="chartdiv" class="box-content">
+        </div>
+        <script type="text/javascript">
+            var chart = new FusionCharts("../addons/xg_jjr/style/graph/MSLine.swf", "ChartId", "100%", "400", "0", "0");
+            chart.setXMLUrl("{php echo webUrl('report', $condition)}&pp=xml");
+            chart.render("chartdiv");
+        </script>
+        {/if}
+        {if $logtype == 6}
+        <div class="panel panel-default">
+            <div class="account-stat">
+                <div class="account-stat-btn">
+                    <div>新增数量<span>{$customernum}</span></div>
+                    <div>{$status[1]}数量<span>{$status1num}</span></div>
+                    <div>{$status[2]}数量<span>{$status2num}</span></div>
+                    <div>{$status[3]}数量<span>{$status3num}</span></div>
+                </div>
+            </div>
+        </div>
+        <style>
+            .account-stat{overflow:hidden; color:#666;}
+            .account-stat .account-stat-btn{width:100%; overflow:hidden;}
+            .account-stat .account-stat-btn > div{text-align:center; margin-bottom:5px;margin-right:2%; float:left;width:23%; height:80px; padding-top:10px;font-size:16px; border-left:1px #DDD solid;}
+            .account-stat .account-stat-btn > div:first-child{border-left:0;}
+            .account-stat .account-stat-btn > div span{display:block; font-size:30px; font-weight:bold}
+        </style>
+        <input type="hidden" id="op" value="customer"/>
+        <div id="chartdiv" class="box-content">
+        </div>
+        <script type="text/javascript">
+            var chart = new FusionCharts("../addons/xg_jjr/style/graph/MSLine.swf", "ChartId", "100%", "400", "0", "0");
+            chart.setXMLUrl("{php echo webUrl('report', $condition)}&pp=xml");
+            chart.render("chartdiv");
+        </script>
+        {/if}
+        {if $logtype == 7}
+        <input type="hidden" id="op" value="activecus"/>
+        <div id="chartdiv" class="box-content">
+        </div>
+        <script type="text/javascript">
+            var chart = new FusionCharts("../addons/xg_jjr/style/graph/Doughnut2D.swf", "ChartId", "100%", "400", "0", "0");
+            chart.setXMLUrl("{php echo webUrl('report', $condition)}&pp=xml");
+            chart.render("chartdiv");
+        </script>
+        {/if}
+        {if $logtype == 8}
+        <input type="hidden" id="op" value="activemem"/>
+        <div id="chartdiv" class="box-content">
+        </div>
+        <script type="text/javascript">
+            var chart = new FusionCharts("../addons/xg_jjr/style/graph/Doughnut2D.swf", "ChartId", "100%", "400", "0", "0");
+            chart.setXMLUrl("{php echo webUrl('report', $condition)}&pp=xml");
+            chart.render("chartdiv");
+        </script>
+        {/if}
+    </div>
+</div>
+<script type="text/ecmascript">
+    var op = $('#op').val();
+    function sort(){
+        var lid = 0;
+        if({$logtype}==4 || {$logtype}==6 || {$logtype}==7 || {$logtype}==8){
+            lid = $('#lid').val();
+        }
+        window.location = "{php echo webUrl('report', '')}&starttime="+$("input[name='datelimit[start]']").val()+"&endtime="+$("input[name='datelimit[end]']").val()+"&location_p="+$('#location_p').val()+"&location_c="+$('#location_c').val()+"&location_a="+$('#location_a').val()+"&lid="+lid+"&op="+op;
+    }
+
+    function selectp(location_p){
+        $("#location_c").html('');
+        $("#location_c").html('<option value="">请选择市/县..</option>');
+        $("#location_a").html('');
+        $("#location_a").html('<option value="">请选择区..</option>');
+        $("#lid").html('');
+        $("#lid").html('<option value="">请选择楼盘..</option>');
+        if(location_p != 0){
+            $.post("{php echo webUrl('report', array('op'=>'select', 'opp'=>'location_p'))}"
+                    ,{location_p:location_p}
+                    ,function(location_c){
+                        if(location_c!=0){
+                            for(c in location_c){
+                                $("#location_c").append('<option value="'+location_c[c]['location_c']+'">'+location_c[c]['location_c']+'</option>');
+                            }
+                        }
+                    }
+                    ,"json"
+            );
+        }
+    }
+
+    function selectc(location_c){
+        $("#location_a").html('');
+        $("#location_a").html('<option value="">请选择区..</option>');
+        $("#lid").html('');
+        $("#lid").html('<option value="">请选择楼盘..</option>');
+        var location_p = $("#location_p").val();
+        if(location_c != 0){
+            $.post("{php echo webUrl('report', array('op'=>'select', 'opp'=>'location_c'))}"
+                    ,{location_p:location_p, location_c:location_c}
+                    ,function(location_a){
+                        if(location_a!=0){
+                            for(a in location_a){
+                                $("#location_a").append('<option value="'+location_a[a]['location_a']+'">'+location_a[a]['location_a']+'</option>');
+                            }
+                        }
+                    }
+                    ,"json"
+            );
+        }
+    }
+
+    function selecta(location_a){
+        $("#lid").html('');
+        $("#lid").html('<option value="">请选择楼盘..</option>');
+        var location_p = $("#location_p").val();
+        var location_c = $("#location_c").val();
+        if(location_a != 0){
+            $.post("{php echo webUrl('report', array('op'=>'select', 'opp'=>'location_a'))}"
+                    ,{location_p:location_p, location_c:location_c, location_a:location_a}
+                    ,function(loupans){
+                        if(loupans!=0){
+                            for(l in loupans){
+                                $("#lid").append('<option value="'+loupans[l]['id']+'">'+loupans[l]['title']+'</option>');
+                            }
+                        }
+                    }
+                    ,"json"
+            );
+        }
+    }
+</script>
+
+{template '_footer'}

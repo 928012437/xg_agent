@@ -1,0 +1,368 @@
+{template '_header'}
+
+<div class="page-heading"> <h2>会员详情</h2> </div>
+
+<form action="" class="form-horizontal form form-validate" method="post">
+
+    <input type="hidden" name="id" value="{$user['id']}">
+
+    <div class="tabs-container">
+
+        <div class="tabs">
+            <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#tab-basic" aria-expanded="true"> 基本信息</a></li>
+                <li class=""><a data-toggle="tab" href="#tab-trade" aria-expanded="false"> 认证信息</a></li>
+
+            </ul>
+            <div class="tab-content ">
+                <div id="tab-basic" class="tab-pane active">
+
+                    <div style="padding-top:10px;">
+
+                        <div class="form-group">
+
+                            <label class="col-xs-12 col-sm-2 col-md-2 control-label">设置权限</label>
+
+                            <div class="col-sm-5">
+
+                                <label class="radio-inline">
+
+                                    <input type="radio" name="status" value="1" {if $user['status'] == '1'}checked="true"{/if}> 可用
+
+                                </label>
+
+                                <label class="radio-inline">
+
+                                    <input type="radio" name="status" value="0" {if $user['status'] == '0'}checked="true"{/if}>黑名单
+
+                                </label>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div>
+
+                        <div class="form-group">
+
+                            <label class="col-xs-12 col-sm-2 col-md-2 control-label">OPENID</label>
+
+                            <div class="col-sm-5">
+
+                                {$user['openid']}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div>
+
+                        <div class="form-group">
+
+                            <label class="col-xs-12 col-sm-2 col-md-2 control-label">真实姓名</label>
+
+                            <div class="col-sm-5">
+
+                                {if $user['realname']!=""} {$user['realname']}{else}未完善{/if}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div>
+
+                        <div class="form-group">
+
+                            <label class="col-xs-12 col-sm-2 col-md-2 control-label">头像</label>
+
+                            <div class="col-sm-3" ondblclick="location.href = '{media $user['headurl']}'">
+
+                                {php echo tpl_form_field_image('headurl', $user['headurl']);}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div>
+
+                        <div class="form-group">
+
+                            <label class="col-xs-12 col-sm-2 col-md-2 control-label">手机号码</label>
+
+                            <div class="col-sm-5">
+
+                                {if $user['mobile']!=""} {$user['mobile']}{else}未完善{/if}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div>
+
+                        <div class="form-group">
+
+                            <label class="col-xs-12 col-sm-2 col-md-2 control-label">微信号</label>
+
+                            <div class="col-sm-5">
+                                <input type="text" name="wechanum" class="form-control" value="{$user['wechanum']}">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div>
+
+                        <div class="form-group">
+
+                            <label class="col-xs-12 col-sm-2 col-md-2 control-label">积分</label>
+
+                            <div class="col-sm-5">
+                                {$user['credit1']}
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div>
+
+                        <div class="form-group">
+
+                            <label class="col-xs-12 col-sm-2 col-md-2 control-label">注册时间</label>
+
+                            <div class="col-sm-5">
+
+                                {php echo date('Y-m-d H:i:s', $user['createtime']);}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div>
+
+                        <div class="form-group">
+
+                            <label class="col-xs-12 col-sm-2 col-md-2 control-label">身份类型</label>
+
+                            <div class="col-sm-2">
+
+                                <select class="form-control" name="sfid">
+
+                                    {loop $identitys $i}
+
+                                    <option value="{$i['id']}" {if $i['id']==$user['sfid']}selected{/if}>{$i['name']}</option>
+
+                                    {/loop}
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div>
+
+                        <div class="form-group">
+
+                            <label class="col-xs-12 col-sm-2 col-md-2 control-label">客户数量</label>
+
+                            <div class="col-sm-5">
+
+                                {if $count==0}
+
+                                {$count}
+
+                                {else}
+
+                                {ifp 'qmjjr.jcustomer'}
+                                <a href="{php echo webUrl('customer', array('id'=>$user['id']))}">{$count}</a>
+                                {else}
+                                {$count}
+                                {/if}
+
+                                {/if}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div>
+
+                        <div class="form-group">
+
+                            <label class="col-xs-12 col-sm-2 col-md-2 control-label">累计佣金</label>
+
+                            <div class="col-sm-5">
+
+                                {$user['commission']}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div>
+
+                        <div class="form-group">
+
+                            <label class="col-xs-12 col-sm-2 col-md-2 control-label">余额</label>
+
+                            <div class="col-sm-5">
+
+                                {$user['credit2']}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div>
+
+                        <div class="form-group">
+
+                            <label class="col-xs-12 col-sm-2 col-md-2 control-label">用户状态</label>
+
+                            <div class="col-sm-5">
+
+                                {if $user['review']==0}
+
+                                <span class="label label-important">未审核</span>
+
+                                {else}
+
+                                <span class="label label-success">已审核</span>
+
+                                {/if}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div>
+
+                        <div class="form-group">
+
+                            <label class="col-xs-12 col-sm-2 col-md-2 control-label">是否关注</label>
+
+                            <div class="col-sm-5">
+
+                                {if $user['is_gz']==0}
+
+                                <span class="label label-important">未关注</span>
+
+                                {else}
+
+                                <span class="label label-success">已关注</span>
+
+                                {/if}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div>
+                        <div class="form-group">
+                            <label class="col-xs-12 col-sm-2 col-md-2 control-label">备注</label>
+                            <div class="col-sm-5">
+                                <textarea style="height:140px;" class="form-control" name="content" cols="70" id="reply-add-text">{$user['content']}</textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+
+                <div id="tab-trade" class="tab-pane">
+
+                    <div>
+
+                        <div class="form-group">
+
+                            <label class="col-xs-12 col-sm-2 col-md-2 control-label">银行卡号</label>
+
+                            <div class="col-sm-5">
+
+                                {if $bcard!=""} {$bcard['bankname']}－<span>{$bcard['num']}</span> {else}未完善{/if}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div>
+
+                        <div class="form-group">
+
+                            <label class="col-xs-12 col-sm-2 col-md-2 control-label">身份证正面</label>
+
+                            <div class="col-sm-3" ondblclick="location.href = '{media $user['idcardurl1']}'">
+
+                                {php echo tpl_form_field_image('idcardurl1', $user['idcardurl1']);}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div>
+
+                        <div class="form-group">
+
+                            <label class="col-xs-12 col-sm-2 col-md-2 control-label">身份证背面</label>
+
+                            <div class="col-sm-3" ondblclick="location.href = '{media $user['idcardurl2']}'">
+
+                                {php echo tpl_form_field_image('idcardurl2', $user['idcardurl2']);}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+        <div class="form-group"></div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"></label>
+            <div class="col-sm-9 col-xs-12">
+                <input type="hidden" name="token" value="{$_W['token']}" />
+                <input type="submit" value="提交" class="btn btn-primary">
+                <input type="button" class="btn btn-default"  onclick="history.go( - 1)" value="返回列表" style="margin-left:10px;">
+            </div>
+        </div>
+
+</form>
+
+{template '_footer'}

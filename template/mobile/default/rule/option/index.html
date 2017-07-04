@@ -1,0 +1,13 @@
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+</head>
+<body>
+{loop $radios $r}
+{$r['name']}</br>
+{loop $r['sub'] $r2}
+{$r2['name']}:<input type="radio" name="rad_{$r['id']}" value="{$r2['id']}" /></br>
+{/loop}
+{/loop}
+</body>
+</html>

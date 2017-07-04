@@ -1,0 +1,76 @@
+{template '_header'}
+
+<div class="page-heading"> <h2>户型图管理</h2> </div>
+
+<div class="page-toolbar row m-b-sm m-t-sm">
+    <div class="col-sm-4">
+
+        <div class="input-group-btn">
+            <button class="btn btn-default btn-sm" type="button" data-toggle="refresh" onclick="location.href = ''"><i class="fa fa-refresh"></i></button>
+            {ifp 'goods.hximg.delete'}
+            <button class="btn btn-default btn-sm jud_a" type="button" data-toggle="batch-remove" data-href="{php echo webUrl('goods/delhxt')}" data-confirm="确定删除？" ><i class="fa fa-trash"></i> 删除</button>
+            {/if}
+            {ifp 'goods.hximg.add'}
+            <a class="btn btn-primary btn-sm" href="{php echo webUrl('goods/posthxt');}"><i class="fa fa-plus"></i> 添加户型图</a>
+            {/if}
+        </div>
+    </div>
+
+    <div class="col-sm-6 pull-right">
+        <form action="" method="post">
+            <div class="input-group">
+
+                <input type="text" class="form-control input-sm" name="sort" value="{$sort}" placeholder="请输入关键词">
+                        <span class="input-group-btn">
+                            <button class="btn btn-sm btn-primary" type="submit"> 搜索</button>
+                        </span>
+            </div>
+        </form>
+    </div>
+</div>
+
+<table class="table table-hover table-responsive">
+    <thead class="navbar-inner">
+    <tr>
+        <th style="width:25px;"><input type="checkbox" name="selected" onclick="getTop(); judable();" ></th>
+        <th style="width:50px;">ID</th>
+        <th style="width:50px;">排序</th>
+        <th style="width:100px;">名称</th>
+        <th style="width:100px;">所属项目</th>
+        <th style="width:100px;">平米数</th>
+        <th >户型</th>
+        <th >标签</th>
+        <th >操作</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    {loop $huxing $t}
+    <tr>
+        <td style="width:25px;"><input type="checkbox" name="select" onclick="judable();" value="{$t['id']}" ></td>
+        <td>{$t['id']}</td>
+        <td>{$t['paixu']}</td>
+        <td>{$t['l_name']}</td>
+        <td>{$t['louname']}</td>
+        <td>{$t['l_pingmi']}㎡</td>
+        <td>{$t['l_shi']}室{$t['l_ting']}厅{$t['l_wei']}卫</td>
+        <td>
+            {php $arr=explode(' ',$t['l_biaoqian']); }
+            {loop $arr $bq}
+            <label  class='label label-default label-info' >{$bq}</label></br>
+            {/loop}
+        </td>
+        <td>
+            {ifp 'goods.hximg.edit'}
+            <a class="btn btn-default btn-sm" href="{php echo webUrl('goods/posthxt', array('id' => $t['id']))}" ><i class="fa fa-edit"></i> 修改</a>
+            {/if}
+            {ifp 'goods.hximg.delete'}
+            <a data-toggle="ajaxRemove" class="btn btn-default btn-sm" href="{php echo webUrl('goods/delhxt',array('id'=>$t['id']))}" data-confirm="确认删除此户型图吗？" ><i class="fa fa-trash"></i> 删除</a></td>
+            {/if}
+    </tr>
+    {/loop}
+
+    </tbody>
+</table>
+
+{template '_footer'}

@@ -1,0 +1,14 @@
+<script language='javascript'>
+	$(function(){
+		$.ajax({
+			url: "{php echo mobileUrl('util/task')}",
+			cache:false 
+		});
+	})
+</script>
+<script language="javascript">require(['init']);</script>
+{template '_share'}
+</div>
+<span style="display:none">{$_W['shopset']['shop']['diycode']}</span>
+</body>
+</html>

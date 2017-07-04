@@ -1,0 +1,246 @@
+{template '_header'}
+
+<div class="page-heading">
+            <span class="pull-right">
+                {ifp 'qmjjr.jjrrule.add'}
+                <a class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal" href=""><i class="fa fa-plus"></i> 添加规则</a>
+                {/if}
+            </span>
+    <h2>规则管理</h2>
+</div>
+<div class="page-toolbar row m-b-sm m-t-sm">
+    <div class="col-sm-4">
+        <div class="input-group-btn">
+            <button class="btn btn-default btn-sm" type="button" data-toggle="refresh" onclick="location.href = ''"><i class="fa fa-refresh"></i></button>
+            {ifp 'qmjjr.jjrrule.delete'}
+            <button class="btn btn-default btn-sm jud_a" type="button" data-toggle="batch-remove" data-confirm="确认要删除吗?" data-href="{php echo webUrl('qmjjr/deljjrrule')}" ><i class="fa fa-trash"></i> 删除</button>
+            {/if}
+        </div>
+    </div>
+
+    <div class="col-sm-6 pull-right">
+        <form action="" method="post">
+            <div class="input-group">
+
+                <select class="form-control valid" name="lid" style="width:100px;" aria-invalid="false">
+                <option value="" >项目</option>
+                    {loop $loupans $l}
+                    <option value="{$l['id']}" {if $l['id']==$sortlid}selected{/if} >{$l['title']}</option>
+                    {/loop}
+                </select>
+                <select class="form-control valid" name="sfid" style="width:100px;" aria-invalid="false">
+                    <option value="" >身份</option>
+                    {loop $idens $l}
+                    <option value="{$l['id']}" {if $l['id']==$sortsfid}selected{/if} >{$l['name']}</option>
+                    {/loop}
+                </select>
+                <select class="form-control valid" name="sid" style="width:100px;" aria-invalid="false">
+                    <option value="" >状态</option>
+                    {loop $statuss $l}
+                    <option value="{$l['id']}" {if $l['id']==$sortsid}selected{/if} >{$l['name']}</option>
+                    {/loop}
+                </select>
+                        <span class="input-group-btn">
+                            <button class="btn btn-sm btn-primary" type="submit"> 搜索</button>
+                        </span>
+
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal inmodal" id="myModal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content animated bounceInRight">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">关闭</span>
+                </button>
+                <h4 class="modal-title">添加规则</h4>
+            </div>
+            <small class="font-bold">
+                <form action="{php echo webUrl('qmjjr/jjrrulepost')}" class="form-horizontal form form-validate" method="post" >
+                    <div class="modal-body">
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label must" >项目</label>
+                            <div class="col-sm-9 col-xs-12">
+                                <select name="lid" class="form-control">
+                                    {loop $loupans $l}
+                                    <option value="{$l['id']}" >{$l['title']}</option>
+                                    {/loop}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label must" >身份</label>
+                            <div class="col-sm-9 col-xs-12">
+                                <select name="sfid" class="form-control">
+                                    {loop $idens $l}
+                                    <option value="{$l['id']}" >{$l['name']}</option>
+                                    {/loop}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label must" >状态</label>
+                            <div class="col-sm-9 col-xs-12">
+                                <select name="sid" class="form-control">
+                                    {loop $statuss $l}
+                                    <option value="{$l['id']}" >{$l['name']}</option>
+                                    {/loop}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label must" >佣金</label>
+                            <div class="col-sm-9 col-xs-12">
+                                <input type="text" name="commis" placeholder="请输入佣金" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label must" >积分</label>
+                            <div class="col-sm-9 col-xs-12">
+                                <input type="text" name="credit" placeholder="请输入积分" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" name="token" value="{$_W['token']}">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                        <button type="submit" class="btn btn-primary">保存</button>
+                    </div>
+                </form>
+            </small>
+        </div>
+        <small class="font-bold">
+        </small>
+    </div>
+    <small class="font-bold">
+    </small>
+</div>
+
+<div class="modal inmodal" id="myModal2" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content animated bounceInRight">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">关闭</span>
+                </button>
+                <h4 class="modal-title">编辑规则</h4>
+            </div>
+            <small class="font-bold">
+                <form action="{php echo webUrl('qmjjr/jjrrulepost')}" class="form-horizontal form form-validate" method="post" >
+                    <div class="modal-body">
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label must" >项目</label>
+                            <div class="col-sm-9 col-xs-12">
+                                <select name="lid" class="form-control" id="lid" >
+                                    {loop $loupans $l}
+                                    <option value="{$l['id']}" >{$l['title']}</option>
+                                    {/loop}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label must" >身份</label>
+                            <div class="col-sm-9 col-xs-12">
+                                <select name="sfid" class="form-control" id="sfid" >
+                                    {loop $idens $l}
+                                    <option value="{$l['id']}" >{$l['name']}</option>
+                                    {/loop}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label must" >状态</label>
+                            <div class="col-sm-9 col-xs-12">
+                                <select name="sid" class="form-control" id="sid" >
+                                    {loop $statuss $l}
+                                    <option value="{$l['id']}" >{$l['name']}</option>
+                                    {/loop}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label must" >佣金</label>
+                            <div class="col-sm-9 col-xs-12">
+                                <input type="text" name="commis" id="commis" placeholder="请输入佣金" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label must" >积分</label>
+                            <div class="col-sm-9 col-xs-12">
+                                <input type="text" name="credit" id="credit" placeholder="请输入积分" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" name="token" value="{$_W['token']}">
+                    <input type="hidden" name="id" id="ruleid" value="">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                        <button type="submit" class="btn btn-primary">保存</button>
+                    </div>
+                </form>
+            </small>
+        </div>
+        <small class="font-bold">
+        </small>
+    </div>
+    <small class="font-bold">
+    </small>
+</div>
+<table class="table table-hover table-responsive">
+    <thead class="navbar-inner">
+    <tr>
+        <th style="width:25px;"><input type="checkbox"  ></th>
+        <th >项目</th>
+        <th >身份</th>
+        <th >状态</th>
+        <th >佣金</th>
+        <th >积分</th>
+        <th >操作</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    {loop $rules $t}
+    <tr>
+        <td style="width:25px;"><input type="checkbox" value="{$t['id']}" ></td>
+        <td>{$t['lid2']}</td>
+        <td>{$t['sfid2']}</td>
+        <td>{$t['sid2']}</td>
+        <td>{$t['commis']}</td>
+        <td>{$t['credit']}</td>
+        <td>
+            {ifp 'business.edit'}
+            <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal2" href="javascript:" data-id="{$t['id']}" data-lid="{$t['lid']}" data-sfid="{$t['sfid']}" data-sid="{$t['sid']}" data-commis="{$t['commis']}" data-credit="{$t['credit']}" onclick="change_m(this)"><i class="fa fa-edit"></i> 修改</a>
+            {/if}
+            {ifp 'business.delete'}
+            <a data-toggle="ajaxRemove" class="btn btn-default btn-sm" href="{php echo webUrl('qmjjr/deljjrrule',array('id'=>$t['id']))}" data-confirm="确定要删除该规则吗？" ><i class="fa fa-trash"></i> 删除</a></td>
+        {/if}
+    </tr>
+    {/loop}
+
+    </tbody>
+</table>
+{$pager}
+<script>
+    function change_m(obj){
+        $('#lid').val($(obj).attr('data-lid'));
+        $('#sfid').val($(obj).attr('data-sfid'));
+        $('#sid').val($(obj).attr('data-sid'));
+        $('#commis').val($(obj).attr('data-commis'));
+        $('#credit').val($(obj).attr('data-credit'));
+        $('#ruleid').val($(obj).attr('data-id'));
+    }
+</script>
+
+{template '_footer'}

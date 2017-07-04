@@ -1,0 +1,42 @@
+{template '_header'}
+
+<div class="page-heading"> <h2>投诉与建议</h2> </div>
+<div class="main">
+    <form action="" method="post" class="form-horizontal form form-validate" enctype="multipart/form-data" id="form1">
+        <div class="panel panel-default">
+
+            <div class="panel-body">
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">姓名</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <input type="text" name="realname" class="form-control" value="{$complain['realname']}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">电话</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <input type="text" name="mobile" class="form-control" value="{$complain['mobile']}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">问题描述</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <textarea name="complain" class="form-control" cols="70">{$complain['complain']}</textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">提交时间</label>
+                    <div class="col-sm-9 col-xs-12">
+                        {php echo date('Y-m-d H:i:s', $complain['createtime'])}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group col-sm-12">
+            <input type="submit" value="提交" class="btn btn-primary col-lg-1" />
+            <input type="hidden" name="token" value="{$_W['token']}" />
+        </div>
+    </form>
+</div>
+
+{template '_footer'}

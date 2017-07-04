@@ -1,0 +1,70 @@
+{template '_header'}
+
+<div class="page-heading">
+    {ifp 'qmjjr.question.edit'}
+            <span class="pull-right">
+                <a class="btn btn-primary btn-sm" href="{php echo webUrl('qmjjr/questionpost')}"><i
+                        class="fa fa-plus"></i>添加问题</a>
+            </span>
+    {/if}
+    <h2>问题管理</h2>
+</div>
+
+<div class="main">
+    <div class="question">
+        <form action="{php echo webUrl('qmjjr/pxquestion')}" method="post" class="form-validate" onsubmit="return formcheck(this)">
+            <div class="panel panel-default">
+                <div class="panel-body table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>显示顺序</th>
+                            <th>标题</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {loop $questions $row}
+                        <tr>
+                            <td><input type="text" class="form-control" name="displayorder[{$row['id']}]"
+                                       value="{$row['displayorder']}" style="width:50px;"/></td>
+                            <td>
+                                {$row['title']}
+                            </td>
+                            <td>
+                                {if $row['status']==1}
+                                <span class='label label-success'>显示</span>
+                                {else}
+                                <span class='label label-danger'>隐藏</span>
+                                {/if}
+                            </td>
+                            <td>
+                                {ifp 'qmjjr.question.edit'}
+                                <a href="{php webUrl('qmjjr/questionpost', array('id' => $row['id']))}"
+                                   class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="bottom"
+                                   title="编辑"><i class="fa fa-edit"></i></a>&nbsp;&nbsp;
+                                {/if}
+                                {ifp 'qmjjr.question.delete'}
+                                <a href="{php webUrl('qmjjr/delquestion', array('id' => $row['id']))}"
+                                   data-confirm="确认删除此问题吗？" class="btn btn-default btn-sm" data-toggle="ajaxRemoce"
+                                   data-placement="bottom" title="删除"><i class="fa fa-times"></i></a>
+                                {/if}
+                            </td>
+                        </tr>
+                        {/loop}
+                        <tr>
+                            <td colspan="4">
+                                <input name="submit" type="submit" class="btn btn-primary" value="提交">
+                                <input type="hidden" name="token" value="{$_W['token']}"/>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+{template '_footer'}

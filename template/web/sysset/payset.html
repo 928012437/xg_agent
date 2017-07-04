@@ -1,0 +1,163 @@
+{template '_header'}
+
+<form action="" method="post" class="form-horizontal form-validate" enctype="multipart/form-data" >
+    <div class="page-heading">
+    <span class="pull-right">
+            {ifp 'sysset.pay.edit'}
+                            <input type="submit" value="提交" class="btn btn-primary"  />
+                          {/if}
+    </span>
+        <h2>支付方式</h2> </div>
+
+
+    {if $resp['code']!=200}
+    <div class="alert alert-danger">
+    <p style="font-size:18px;font-weight: bold;word-break: break-all">{$url} 访问受限, 请检查您的服务器设置</p>
+        <p style="font-size:18px;font-weight: bold;word-break: break-all">HTTP 错误代码: {$resp['code']}</p>
+    </div>
+    {/if}
+
+    <div class="panel panel-default" >
+        <div class="panel-body">
+            <div class="col-sm-9 col-xs-12">
+                <h4>微信支付</h4>
+                <span>
+                    <p>在开启微信支付前，请到 <a href='{php echo url('profile/payment')}' target="_blank">支付选项</a> 去设置好参数。</p>
+                    <p class="text text-danger">支付授权目录与“支付选项”中的说明不同，应在 公众平台->微信支付->公众号支付 追加一条支付授权目录: <b>{$_W['siteroot']}app/</b>  </p>
+
+
+                </span>
+            </div>
+            <div class="col-sm-2 pull-right" style="padding-top:10px;text-align: right" >
+                <input type="checkbox" class="js-switch" name="data[weixin]" value="1" {if $data['weixin']==1}checked{/if} />
+            </div>
+        </div>
+        <div class="panel-body" id='certs' {if empty($data['weixin'])}style="display:none"{/if}>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">CERT证书文件</label>
+            <div class="col-sm-9 col-xs-12">
+                <input type="hidden" name="data[weixin_cert]" value="{$data['weixin_cert']}"/>
+                {ifp 'sysset.pay.edit'}
+
+                <input type="file" name="weixin_cert_file" class="form-control" />
+                            <span class="help-block">
+                                {if !empty($sec['cert'])}
+                                <span class='label label-success'>已上传</span>
+                                {else}
+                                <span class='label label-danger'>未上传</span>
+                                {/if}
+                                下载证书 cert.zip 中的 apiclient_cert.pem 文件</span>
+                {else}
+                {if !empty($sec['cert'])}
+                <span class='label label-success'>已上传</span>
+                {else}
+                <span class='label label-danger'>未上传</span>
+                {/if}
+                {/if}
+
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">KEY密钥文件</label>
+            <div class="col-sm-9 col-xs-12">
+                <input type="hidden" name="data[weixin_key]"  value="{$data['weixin_key']}"/>
+                {ifp 'sysset.pay.edit'}
+
+                <input type="file" name="weixin_key_file" class="form-control" />
+                            <span class="help-block">
+                               {if !empty($sec['key'])}
+                                <span class='label label-success'>已上传</span>
+                                {else}
+                                <span class='label label-danger'>未上传</span>
+                                {/if}
+                                下载证书 cert.zip 中的 apiclient_key.pem 文件
+                            </span>
+                {else}
+                {if !empty($sec['key'])}
+                <span class='label label-success'>已上传</span>
+                {else}
+                <span class='label label-danger'>未上传</span>
+                {/if}
+                {/if}
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">ROOT文件</label>
+            <div class="col-sm-9 col-xs-12">
+                <input type="hidden" name="data[weixin_root]" value="{$data['weixin_root']}"/>
+                {ifp 'sysset.pay.edit'}
+
+                <input type="file" name="weixin_root_file" class="form-control" />
+                            <span class="help-block">
+                              {if !empty($sec['root'])}
+                                <span class='label label-success'>已上传</span>
+                                {else}
+                                <span class='label label-danger'>未上传</span>
+                                {/if}
+                                下载证书 cert.zip 中的 rootca.pem 文件 
+                            </span>
+                {else}
+                {if !empty($sec['root'])}
+                <span class='label label-success'>已上传</span>
+                {else}
+                <span class='label label-danger'>未上传</span>
+                {/if}
+                {/if}
+            </div>
+        </div>
+    </div>
+    </div>
+
+
+    <div class="panel panel-default" >
+        <div class="panel-body">
+            <div class="col-sm-9 col-xs-12">
+                <h4>支付宝支付</h4>
+                <span> 在开启支付宝支付方式前，请到 <a href='{php echo url('profile/payment')}' target="_blank">支付选项</a> 去设置好参数。</span>
+            </div>
+            <div class="col-sm-2 pull-right" style="padding-top:10px;text-align: right" >
+                <input type="checkbox" class="js-switch" name="data[alipay]"  value="1" {if $data['alipay']==1}checked{/if} />
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-default" >
+        <div class="panel-body">
+            <div class="col-sm-9 col-xs-12">
+                <h4>余额支付</h4>
+                <span>开启后，粉丝可以用账户余额去商城消费.</span>
+            </div>
+            <div class="col-sm-2 pull-right" style="padding-top:10px;text-align: right" >
+                <input type="checkbox" class="js-switch"  name="data[credit]"  value="1" {if $data['credit']==1}checked{/if} />
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default" >
+        <div class="panel-body">
+            <div class="col-sm-9 col-xs-12">
+                <h4>货到付款</h4>
+                <span>如果要支持货到付款，也需要将商品设置成货到付款。</span>
+            </div>
+            <div class="col-sm-2 pull-right" style="padding-top:10px;text-align: right" >
+                <input type="checkbox" class="js-switch" name="data[cash]" value="1" {if $data['cash']==1}checked{/if} />
+            </div>
+        </div>
+    </div>
+
+
+</form>
+<script language="javascript">
+    $(function () {
+        $(":checkbox[name='data[weixin]']").click(function () {
+            if ($(this).prop('checked')) {
+                $("#certs").show();
+            }
+            else {
+                $("#certs").hide();
+            }
+        })
+
+    })
+</script>
+{template '_footer'}     

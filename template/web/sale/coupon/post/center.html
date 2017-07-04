@@ -1,0 +1,70 @@
+<div class="form-group">
+    <label class="col-sm-2 control-label">领券中心是否可获得</label>
+    <div class="col-sm-9 col-xs-12" >
+          {ife 'sale.coupon' $item}
+        <label class="radio-inline">
+            <input type="radio" name="gettype" value="0" {if $item['gettype'] == 0}checked="true"{/if}  onclick="$('.gettype').hide()"/> 不可以
+        </label>
+		          <label class="radio-inline">
+            <input type="radio" name="gettype" value="1" {if $item['gettype'] == 1}checked="true"{/if} onclick="$('.gettype').show()" /> 可以
+        </label>
+		  <span class='help-block'>会员是否可以在领券中心直接领取或购买</span>
+		
+          {else} <div class='form-control-static'>
+             {if $item['gettype']==1}可以{else}不可以{/if}
+          </div>
+          {/if}
+    </div>
+</div>
+<div class="gettype" {if $item['gettype']!=1}style="display:none"{/if}>
+ 
+	  {ife 'sale.coupon' $item}
+	  
+	    <div class="form-group gettype" >
+                        <label class="col-sm-2 control-label"></label>
+                          <div class="col-sm-9 col-xs-12" >
+				     <div class="input-group">
+			  <span class="input-group-addon">每个限领</span>
+			  <input type='text' class='form-control' value="{$item['getmax']}" name='getmax'/>
+                                <span class="input-group-addon">张</span>
+					 </div>
+			</div>
+	   </div>
+	    <div class="form-group gettype" >
+                        <label class="col-sm-2 control-label"></label>
+                          <div class="col-sm-9 col-xs-12" >
+				  
+			  <div class="input-group">
+			  
+                                <span class="input-group-addon">消耗</span>
+                             <input type='text' class='form-control' value="{$item['credit']}" name='credit'/>
+                             <span class="input-group-addon">积分 + 花费</span>
+                                <input type='text' class='form-control' value="{$item['money']}" name='money'/>
+                              <span class="input-group-addon">元&nbsp;&nbsp;
+                                  <label class="checkbox-inline" style='margin-top:-8px;'>
+                                    <input type="checkbox" name='usecredit2' value="1" {if $item['usecredit2']==1}checked{/if} /> 优先使用余额支付
+                                </label>
+                              </span></div>
+			 <span class="help-block">每人限领，空不限制，领取方式可任意组合，可以单独积分兑换，单独现金兑换，或者积分+现金形式兑换, 如果都为空，则可以免费领取</span>
+							  
+			</div>
+	   </div>
+	    <div class="form-group gettype" >
+                        <label class="col-sm-2 control-label"></label>
+                          <div class="col-sm-9 col-xs-12" >
+				  
+			</div>
+	   </div>
+	  
+	  {else}
+	   <div class="form-group gettype" >
+                        <label class="col-sm-2 control-label"></label>
+                          <div class="col-sm-9 col-xs-12" >
+				  <div class='form-control-static'>消耗 {$item['credit']} 积分 花费 {$item['money']} 元现金</div>	
+			</div>
+	   </div>
+	  
+	  {/if}
+	 
+</div>
+	

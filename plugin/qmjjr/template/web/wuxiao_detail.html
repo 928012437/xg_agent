@@ -1,0 +1,174 @@
+{template '_header'}
+
+<div class="page-heading">
+    <h2>提现申请信息
+        <small> 共计 <span style="color:red; ">{$count}</span> 个订单 , 佣金总计 <span style="color:red; ">{$cost}</span> 元
+        </small>
+    </h2>
+</div>
+<div class="step-region">
+    <ul class="ui-step ui-step-4">
+        <li>
+            <div class="ui-step-title">申请中</div>
+            <div class="ui-step-number">1</div>
+            <div class="ui-step-meta"></div>
+        </li>
+        <li>
+            <div class="ui-step-title">商家审核</div>
+            <div class="ui-step-number">2</div>
+            <div class="ui-step-meta"></div>
+        </li>
+        <li>
+            <div class="ui-step-title">商家打款</div>
+            <div class="ui-step-number">3</div>
+            <div class="ui-step-meta"></div>
+        </li>
+        <li class="ui-step-done">
+            <div class="ui-step-title">无效</div>
+            <div class="ui-step-number">!</div>
+            <div class="ui-step-meta">{php echo date('Y-m-d',$commis['wxtime'])}<br>{php echo date('H:i:s',$commis['wxtime'])}</div>
+        </li>
+    </ul>
+</div>
+
+<form action="" method="post" class="form-horizontal form-validate" novalidate="novalidate">
+
+    <input type="hidden" name="id" value="{$commis['id']}">
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            提现者信息
+        </div>
+        <div class="panel-body">
+            <div style="height:auto;width:120px;float:left;">
+                <img src="{$member['headurl']}" style="width:100px;height:100px;border:1px solid #ccc;padding:1px" onerror="">
+            </div>
+            <div style="float:left;height:auto;overflow: hidden;width:600px">
+                <p>
+                    <b>昵称:</b> {$member['nickname']}
+                    <b>姓名:</b> {$member['realname']}
+                    <b>手机号:</b> {$member['mobile']}
+                    <b>微信号:</b> {$member['wechanum']}
+                </p>
+                <p>
+                    <b>身份</b> {$identity['identity_name']}
+                </p>
+                <p>
+                    <b>累计佣金: </b><span style="color:red">{$commission}</span> 元
+                    <b>待审核佣金: </b><span style="color:red">{$commission_s}</span> 元
+                    <b>待打款佣金: </b><span style="color:red">{$commission_d}</span> 元
+                    <b>已打款佣金: </b><span style="color:red">{$commission_y}</span> 元
+                </p>
+                <p>
+                    <b>申请佣金: </b><span style="color:red">{$cost}</span> 元
+                    <b>申请积分: </b><span style="color:red">{$cost2}</span> 分
+                </p>
+
+                <p>
+                    <b>打款方式: </b>
+                    <span class="label label-primary">{$commis['txfs']}</span>
+                </p>
+
+            </div>
+        </div>
+
+        <div class="panel-body">
+            <table class="table">
+                <thead class="navbar-inner">
+                <tr>
+                    <th>客户名</th>
+                    <th>金额</th>
+                    <th>积分</th>
+                    <th style="width:120px;">提现方式</th>
+                    <th style="width:190px;">下单时间</th>
+                    <th style="width:190px;">审核结果</th>
+                </tr>
+                </thead>
+                <tbody>
+                {loop $commis_s $c}
+                <tr style="background: #eee">
+                    <td>{$c['cname']}</td>
+                    <td><b>{$c['commis']}</b></td>
+                    <td><b>{$c['credit']}</b></td>
+
+                    <td>
+                        <span class="label label-default">{$commis['txfs']}</span>
+                    </td>
+
+                    <td><?php echo date('Y-m-d H:i:s',$c['createtime'])?></td>
+
+                    <td>
+                        <span class="label label-default">未通过</span>
+                    </td>
+
+                </tr>
+                {/loop}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+    <div class="form-group col-sm-12">
+
+        <input type="submit" name="submit_cancel" value="重新审核" class="btn btn-default" onclick="return cancel()">
+        <input type="button" class="btn btn-default" name="submit" onclick="history.go(-1)" value="返回" style="margin-left:10px;">
+
+    </div>
+</form>
+
+<script language="javascript">
+    function checkall(ischeck) {
+        if (ischeck) {
+            $('.sta2').each(function () {
+                $(this).prop('checked', 'true');
+            });
+        } else {
+            $('.sta1').each(function () {
+                $(this).prop('checked', 'true');
+            });
+        }
+    }
+    function check() {
+        var pass = true;
+        $('.sta1').each(function () {
+            if (!$(this).is(':checked') && !$(this).parent().next().children().is(':checked')) {
+                alert('请选择审核状态!');
+
+                pass = false;
+                return false;
+            }
+        });
+        if (!pass) {
+            return false;
+        }
+        $(':input[name=r]').val('commission.apply.check');
+        return confirm('确认已核实成功并要提交?\r\n(提交后还可以撤销审核状态, 申请将恢复到申请状态)');
+    }
+    function refuse() {
+        $(':input[name=r]').val('commission.apply.refuse');
+        return confirm('确认驳回申请?\r\n( 分销商可以重新提交提现申请)');
+    }
+    function cancel() {
+        $(':input[name=r]').val('commission.apply.cancel');
+        return confirm('确认撤销审核?\r\n( 所有状态恢复到申请状态)');
+    }
+    function pay_credit() {
+        $(':input[name=r]').val('commission.apply.pay');
+        return confirm('确认打款到此用户的余额账户?');
+    }
+    function pay_weixin() {
+        $(':input[name=r]').val('commission.apply.pay');
+        return confirm('确认打款到此用户的微信钱包?');
+    }
+    function pay_alipay() {
+        $(':input[name=r]').val('commission.apply.pay');
+        return confirm('确认打款到此用户的支付宝? 支付宝帐号:' + $("#alipay").html());
+    }
+
+    function pay_bank() {
+        $(':input[name=r]').val('commission.apply.pay');
+        return confirm('确认打款到此用户的银行卡? ' + $("#bankname").html() + ' 卡号:' + $("#bankcard").html());
+    }
+</script>
+
+{template '_footer'}

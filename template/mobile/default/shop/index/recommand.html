@@ -1,0 +1,41 @@
+<div id="recommand"></div>
+<div class='infinite-loading' style="text-align: center; color: #666;">
+	<span class='fui-preloader'></span>
+	<span class='text'> 正在加载...</span>
+</div>
+<script type="text/html" id="tpl_recommand">
+	<%if list!=''%>
+		<%if page==1%>
+			<div class="fui-line" style="background: #f4f4f4;">
+				<div class="text text-danger"><i class="icon icon-hotfill"></i> 店铺推荐</div>
+			</div>
+			<div class="fui-goods-group block border">
+		<%/if%>
+		
+			<%each list as item%>
+				<div class="fui-goods-item" data-goodsid="<%item.id%>">
+					<a href="{php echo mobileUrl('goods/detail')}&id=<%item.id%>">
+						<div class="image" data-lazy-background="<%item.thumb%>"></div>
+					</a>
+					<div class="detail">
+						<a href="{php echo mobileUrl('goods/detail')}&id=<%item.id%>">
+							<div class="name"><%item.title%></div>
+						</a>
+						<div class="price">
+							<span class="text">￥<%item.minprice%></span>
+							<span class="buy"><i class="icon icon-cart"></i></span>
+						</div>
+					</div>
+				</div>
+
+			<%/each%>
+			
+		<%if page==1%>
+			</div>
+		<%/if%>
+		
+	<%/if%>
+</script>
+<script language='javascript'>
+	require(['biz/shop/index'], function (modal) {modal.init({merchid:{php echo intval($_GPC['merchid'])}})});
+</script>

@@ -1,0 +1,11 @@
+//公共部分
+export const COMM_CONF = 'COMM_CONF';
+
+// 统计管理
+export const DATA_GET_DAY_SUCCESS='DATA_GET_DAY_SUCCESS'
+export const DATA_GET_MOUNTH_SUCCESS='DATA_GET_MOUNTH_SUCCESS'
+
+//客户
+export const CUS_CHECK_SHARE="CUS_CHECK_SHARE"
+export const CUS_CHECK_OVERDUE='CUS_CHECK_OVERDUE'
+
